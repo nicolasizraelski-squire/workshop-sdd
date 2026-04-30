@@ -30,8 +30,8 @@
       padding: 3rem; text-align: center; transition: opacity 0.5s;
     }
     #waiting-screen.hidden { opacity: 0; pointer-events: none; }
-    #waiting-screen h2 { font-size: 1.1rem; color: var(--text-muted); font-weight: 500; margin-bottom: 0.5rem; }
-    #waiting-screen .session-title { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 900; margin-bottom: 2.5rem; }
+    #waiting-screen h2 { font-size: 1.3rem; color: var(--text-muted); font-weight: 500; margin-bottom: 0.5rem; }
+    #waiting-screen .session-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; margin-bottom: 2.5rem; }
     #waiting-screen .session-title .g { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .fun-fact-container {
       background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
@@ -40,7 +40,7 @@
       position: relative; overflow: hidden;
     }
     .ff-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent-light); margin-bottom: 0.8rem; }
-    .fun-fact-text { font-size: 1.15rem; font-weight: 600; line-height: 1.5; color: var(--text); transition: opacity 0.5s; min-height: 4rem; display: flex; align-items: center; justify-content: center; text-align: center; }
+    .fun-fact-text { font-size: 1.3rem; font-weight: 600; line-height: 1.5; color: var(--text); transition: opacity 0.5s; min-height: 4rem; display: flex; align-items: center; justify-content: center; text-align: center; }
     .fun-fact-emoji { font-size: 2.2rem; margin-bottom: 0.8rem; transition: opacity 0.5s; }
     .ff-progress { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--gradient); border-radius: 0 0 16px 16px; animation: ffProgress 8s linear infinite; }
     @keyframes ffProgress { from { width: 0; } to { width: 100%; } }
@@ -53,50 +53,50 @@
     .sw { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; opacity: 0; pointer-events: none; visibility: hidden; }
     .sw.active { opacity: 1; transform: translateX(0) !important; pointer-events: auto; visibility: visible; transition: opacity 0.4s ease, transform 0.4s ease; }
     .sw.leaving { visibility: visible; transition: opacity 0.4s ease, transform 0.4s ease; }
-    .slide { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 4rem 3rem; max-width: 1060px; margin: 0 auto; text-align: center; }
+    .slide { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 4rem 5rem; max-width: 1280px; margin: 0 auto; text-align: center; }
 
     /* Nav */
     .dots-nav { position: fixed; right: 1.2rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 0.45rem; z-index: 100; }
     .dots-nav a { width: 8px; height: 8px; border-radius: 50%; background: var(--border); display: block; transition: all 0.3s; cursor: pointer; }
     .dots-nav a:hover, .dots-nav a.active { background: var(--accent-light); transform: scale(1.4); }
-    .slide-counter { position: fixed; bottom: 1.5rem; right: 1.5rem; font-size: 0.7rem; color: var(--text-muted); z-index: 100; font-variant-numeric: tabular-nums; opacity: 0.5; }
+    .slide-counter { position: fixed; bottom: 1.5rem; right: 1.5rem; font-size: 0.85rem; color: var(--text-muted); z-index: 100; font-variant-numeric: tabular-nums; opacity: 0.5; }
 
     /* Typography */
-    .label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent-light); margin-bottom: 1rem; }
-    h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; line-height: 1.12; margin-bottom: 1.2rem; }
+    .label { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent-light); margin-bottom: 1rem; }
+    h1 { font-size: clamp(2.6rem, 5vw, 4rem); font-weight: 900; line-height: 1.12; margin-bottom: 1.2rem; }
     h1 .g, h2 .g { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    h2 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; line-height: 1.2; margin-bottom: 0.8rem; }
-    .sub { font-size: 1.05rem; color: var(--text-muted); max-width: 640px; margin-bottom: 2rem; }
-    .pill { display: inline-flex; align-items: center; gap: 0.3rem; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; font-size: 0.9rem; font-weight: 700; color: var(--accent-light); }
+    h2 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; line-height: 1.2; margin-bottom: 0.8rem; }
+    .sub { font-size: 1.25rem; color: var(--text-muted); max-width: 780px; margin-bottom: 2rem; }
+    .pill { display: inline-flex; align-items: center; gap: 0.3rem; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; font-size: 1.05rem; font-weight: 700; color: var(--accent-light); }
 
     /* Bullets */
-    .bullets { text-align: left; width: 100%; display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1rem; }
-    .bullets li { list-style: none; font-size: 1rem; display: flex; align-items: flex-start; gap: 0.6rem; line-height: 1.5; }
-    .bullets li .b { flex-shrink: 0; font-size: 1.1rem; }
+    .bullets { text-align: left; width: 100%; display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
+    .bullets li { list-style: none; font-size: 1.15rem; display: flex; align-items: flex-start; gap: 0.7rem; line-height: 1.5; }
+    .bullets li .b { flex-shrink: 0; font-size: 1.3rem; }
 
     /* Compare */
-    .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; width: 100%; margin-top: 1rem; }
+    .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8rem; width: 100%; margin-top: 1rem; }
     @media (max-width: 700px) { .cmp { grid-template-columns: 1fr; } }
-    .cmp-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.8rem; position: relative; overflow: hidden; text-align: left; }
-    .cmp-panel .tag { position: absolute; top: 0; left: 0; right: 0; padding: 0.4rem; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; text-align: center; }
+    .cmp-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 2.2rem; position: relative; overflow: hidden; text-align: left; }
+    .cmp-panel .tag { position: absolute; top: 0; left: 0; right: 0; padding: 0.5rem; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; text-align: center; }
     .cmp-before .tag { background: var(--red-bg); color: var(--red); }
     .cmp-after .tag { background: var(--green-bg); color: var(--green); }
-    .cmp-panel ul { list-style: none; padding-top: 1.8rem; display: flex; flex-direction: column; gap: 0.6rem; }
-    .cmp-panel li { font-size: 0.88rem; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
-    .cmp-panel li .b { flex-shrink: 0; font-size: 1rem; }
+    .cmp-panel ul { list-style: none; padding-top: 2.2rem; display: flex; flex-direction: column; gap: 0.8rem; }
+    .cmp-panel li { font-size: 1.05rem; display: flex; align-items: flex-start; gap: 0.6rem; line-height: 1.5; }
+    .cmp-panel li .b { flex-shrink: 0; font-size: 1.15rem; }
     .cmp-before li { color: var(--text-muted); }
 
     /* Flow */
     .flow-row { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; justify-content: center; margin: 1.5rem 0; }
-    .fb { padding: 0.7rem 1.2rem; border-radius: 10px; font-size: 0.82rem; font-weight: 600; border: 1px solid; text-align: center; }
+    .fb { padding: 0.9rem 1.5rem; border-radius: 10px; font-size: 1rem; font-weight: 600; border: 1px solid; text-align: center; }
     .fb.src { background: var(--blue-bg); border-color: rgba(116,185,255,0.25); color: var(--blue); }
     .fb.sk { background: rgba(108,92,231,0.12); border-color: rgba(108,92,231,0.25); color: var(--accent-light); }
     .fb.out { background: var(--green-bg); border-color: rgba(0,184,148,0.25); color: var(--green); }
     .fb.purple { background: var(--purple-bg); border-color: rgba(139,92,246,0.25); color: var(--purple); }
-    .fa { color: var(--text-muted); font-size: 1.3rem; }
+    .fa { color: var(--text-muted); font-size: 1.5rem; }
 
     /* Card */
-    .card-accent { background: rgba(0,127,255,0.05); border: 1px solid var(--accent); border-radius: 14px; padding: 2rem; width: 100%; text-align: center; margin-top: 1.5rem; }
+    .card-accent { background: rgba(0,127,255,0.05); border: 1px solid var(--accent); border-radius: 14px; padding: 2rem; width: 100%; text-align: center; margin-top: 1.5rem; font-size: 1.1rem; }
 
     /* Analogy */
     .analogy-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 2rem 2.5rem; max-width: 700px; width: 100%; text-align: left; margin: 1rem 0; }
@@ -104,20 +104,20 @@
 
     /* Terminal */
     .term { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; width: 100%; margin-top: 1.5rem; text-align: left; }
-    .term-bar { background: var(--surface-2); padding: 0.45rem 1rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 6px; font-size: 0.68rem; color: var(--text-muted); }
-    .term-bar .d { display: flex; gap: 5px; }
-    .term-bar .d span { width: 9px; height: 9px; border-radius: 50%; }
+    .term-bar { background: var(--surface-2); padding: 0.55rem 1.2rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 7px; font-size: 0.8rem; color: var(--text-muted); }
+    .term-bar .d { display: flex; gap: 6px; }
+    .term-bar .d span { width: 11px; height: 11px; border-radius: 50%; }
     .term-bar .d .r { background: #EB4646; } .term-bar .d .y { background: #F4983B; } .term-bar .d .gr { background: #31AD5A; }
-    .term-body { padding: 1rem 1.2rem; font-family: 'Courier New', monospace; font-size: 0.78rem; line-height: 1.8; color: var(--text-muted); white-space: pre-wrap; }
+    .term-body { padding: 1.2rem 1.5rem; font-family: 'Courier New', monospace; font-size: 0.95rem; line-height: 1.8; color: var(--text-muted); white-space: pre-wrap; }
     .term-body .cmd { color: var(--text); } .term-body .hi { color: var(--accent-light); font-weight: 600; }
     .term-body .ok { color: var(--green); } .term-body .hl { color: var(--orange); } .term-body .fl { color: var(--blue); }
 
     /* Tools grid */
-    .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; width: 100%; margin-top: 1.5rem; }
-    .tool-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem; text-align: left; }
-    .tool-card .tool-name { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 0.3rem; }
-    .tool-card .tool-tag { font-size: 0.65rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 100px; display: inline-block; margin-bottom: 0.5rem; }
-    .tool-card .tool-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+    .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; width: 100%; margin-top: 1.5rem; }
+    .tool-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.6rem; text-align: left; }
+    .tool-card .tool-name { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; }
+    .tool-card .tool-tag { font-size: 0.8rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 100px; display: inline-block; margin-bottom: 0.5rem; }
+    .tool-card .tool-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; }
     a.tool-card { text-decoration: none; color: inherit; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; }
     a.tool-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,127,255,0.15); }
     a.tool-card .tool-name { transition: color 0.2s; }
@@ -125,12 +125,12 @@
 
     /* Phase blocks */
     .phases { display: flex; flex-direction: column; gap: 1rem; width: 100%; margin-top: 1rem; }
-    .phase-block { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem 1.8rem; text-align: left; display: flex; gap: 1.2rem; align-items: flex-start; }
-    .phase-num { font-size: 1.8rem; font-weight: 900; line-height: 1; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; flex-shrink: 0; }
+    .phase-block { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.8rem 2rem; text-align: left; display: flex; gap: 1.2rem; align-items: flex-start; }
+    .phase-num { font-size: 2.2rem; font-weight: 900; line-height: 1; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; flex-shrink: 0; }
     .phase-content { flex: 1; }
-    .phase-content h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
-    .phase-content p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
-    .phase-tag { font-size: 0.65rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 100px; }
+    .phase-content h4 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .phase-content p { font-size: 1rem; color: var(--text-muted); line-height: 1.5; }
+    .phase-tag { font-size: 0.8rem; font-weight: 600; padding: 0.25rem 0.7rem; border-radius: 100px; }
     .phase-tag.eng { background: var(--blue-bg); color: var(--blue); }
     .phase-tag.prod { background: var(--purple-bg); color: var(--purple); }
     .phase-tag.qa { background: var(--green-bg); color: var(--green); }
@@ -141,25 +141,31 @@
     .resources-list { text-align: left; width: 100%; display: flex; flex-direction: column; gap: 0.7rem; margin-top: 1rem; }
     .resource-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1.2rem; display: flex; align-items: center; gap: 0.8rem; text-decoration: none; transition: border-color 0.2s; }
     .resource-item:hover { border-color: var(--accent); }
-    .resource-item .r-icon { font-size: 1.2rem; flex-shrink: 0; }
-    .resource-item .r-title { font-size: 0.85rem; font-weight: 600; color: var(--text); }
-    .resource-item .r-source { font-size: 0.7rem; color: var(--text-muted); }
+    .resource-item .r-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .resource-item .r-title { font-size: 1rem; font-weight: 600; color: var(--text); }
+    .resource-item .r-source { font-size: 0.85rem; color: var(--text-muted); }
 
     /* Big quote */
-    .big-quote { font-size: clamp(1.3rem, 3vw, 1.8rem); font-weight: 800; line-height: 1.4; max-width: 700px; color: var(--text); }
+    .big-quote { font-size: clamp(1.6rem, 3.5vw, 2.3rem); font-weight: 800; line-height: 1.4; max-width: 800px; color: var(--text); }
     .big-quote .g { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
     /* Squire logo */
     .squire-logo { position: fixed; top: 1.2rem; left: 1.5rem; z-index: 200; opacity: 0.7; }
-    .squire-logo svg { height: 22px; width: auto; }
+    .squire-logo svg { height: 28px; width: auto; }
 
     /* Analogy card */
-    .analogy-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem 2rem; max-width: 640px; margin-top: 1rem; }
-    .analogy-card .quote { font-size: 1rem; color: var(--text-muted); line-height: 1.6; font-style: italic; }
+    .analogy-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.8rem 2.2rem; max-width: 780px; margin-top: 1rem; }
+    .analogy-card .quote { font-size: 1.15rem; color: var(--text-muted); line-height: 1.6; font-style: italic; }
+
+    /* Stats */
+    .stats { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; }
+    .st { text-align: center; min-width: 160px; }
+    .st .n { font-size: 2.4rem; font-weight: 900; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.2; }
+    .st .l { font-size: 0.95rem; color: var(--text-muted); margin-top: 0.3rem; line-height: 1.4; }
 
     /* Spectrum bar */
     .spectrum { display: flex; width: 100%; max-width: 700px; margin-top: 1.5rem; border-radius: 10px; overflow: hidden; }
-    .spectrum-seg { padding: 1rem 0.8rem; text-align: center; font-size: 0.75rem; font-weight: 600; line-height: 1.4; }
+    .spectrum-seg { padding: 1.2rem 1rem; text-align: center; font-size: 0.9rem; font-weight: 600; line-height: 1.4; }
   </style>
 </head>
 <body>
@@ -367,20 +373,33 @@
 
 <div class="sw"><div class="slide">
   <p class="label">Case Study &mdash; Commander Mobile</p>
-  <h2>SDD in practice at Squire</h2>
-  <div class="cmp" style="margin-top:1.5rem;">
-    <div class="cmp-panel cmp-before"><div class="tag">The challenge</div><ul>
-      <li><span class="b">&#128466;</span> Two legacy codebases &mdash; years of features, zero documentation</li>
-      <li><span class="b">&#128466;</span> Business rules, permissions, edge cases &mdash; all buried in code</li>
-      <li><span class="b">&#128466;</span> Information scattered &mdash; no single role had the full picture</li>
-    </ul></div>
-    <div class="cmp-panel cmp-after"><div class="tag">What SDD gave us</div><ul>
-      <li><span class="b">&#9889;</span> AI extracts specs from existing codebases</li>
-      <li><span class="b">&#9889;</span> Specs refined with new requirements &amp; Figma</li>
-      <li><span class="b">&#9889;</span> Plans generated, reviewed, then implemented phase by phase</li>
-    </ul></div>
+  <h2>The starting point</h2>
+  <p class="sub" style="margin-bottom:1.5rem;">We were rebuilding Commander &mdash; the app barbers use every day to manage their business.</p>
+  <ul class="bullets" style="max-width:720px;">
+    <li><span class="b" style="color:var(--red);">&#128466;</span><div><strong>Two legacy codebases</strong> &mdash; years of features stacked on top of each other, zero documentation. Business rules buried deep in the code.</div></li>
+    <li><span class="b" style="color:var(--red);">&#128466;</span><div><strong>Knowledge silos</strong> &mdash; no single role had the full picture. Engineers knew the code, Product knew the intent, QA knew the bugs. Nobody had it all.</div></li>
+    <li><span class="b" style="color:var(--red);">&#128466;</span><div><strong>AI made it worse at first</strong> &mdash; we tried prompting Claude to rebuild features, but without documentation it hallucinated business rules and missed edge cases constantly.</div></li>
+  </ul>
+</div></div>
+
+<div class="sw"><div class="slide">
+  <p class="label">Case Study &mdash; Commander Mobile</p>
+  <h2>How we applied SDD</h2>
+  <div class="phases" style="max-width:750px;">
+    <div class="phase-block">
+      <div class="phase-num">1</div>
+      <div class="phase-content"><h4>Extract specs from legacy code</h4><p>We pointed Claude at the existing codebases and asked it to document what it found &mdash; flows, business rules, permissions, edge cases. It became our archaeology tool.</p></div>
+    </div>
+    <div class="phase-block">
+      <div class="phase-num">2</div>
+      <div class="phase-content"><h4>Refine with new requirements &amp; Figma</h4><p>We took those extracted specs, layered on the new requirements from Product, and linked the Figma frames directly. Each spec became the single source of truth.</p></div>
+    </div>
+    <div class="phase-block">
+      <div class="phase-num">3</div>
+      <div class="phase-content"><h4>Generate plans &amp; implement phase by phase</h4><p>Plans broke each feature into small, testable phases. We implemented one phase at a time, verified it worked, then moved to the next. Rework dropped dramatically.</p></div>
+    </div>
   </div>
-  <div class="card-accent" style="margin-top:1.5rem;padding:1rem;max-width:680px;"><p style="font-size:0.9rem;">This workflow applies to <strong>any team building features with AI</strong> &mdash; you don't need legacy code to benefit.</p></div>
+  <div class="card-accent" style="margin-top:1.5rem;padding:1rem;max-width:750px;"><p>This workflow applies to <strong>any team building features with AI</strong> &mdash; you don't need legacy code to benefit.</p></div>
 </div></div>
 
 <div class="sw"><div class="slide">
@@ -391,7 +410,7 @@
     <div class="st"><div class="n">~60%</div><div class="l">less rework</div></div>
     <div class="st"><div class="n">3-4 pg</div><div class="l">specs per Jira ticket<br/>(previously just a title)</div></div>
   </div>
-  <ul class="bullets" style="margin-top:2rem;max-width:620px;">
+  <ul class="bullets" style="margin-top:2rem;max-width:700px;">
     <li><span class="b" style="color:var(--green);">&#9989;</span><div><strong>Real documentation that stays updated</strong><br /><span style="color:var(--text-muted);">Acceptance criteria, testing notes, and specs in every ticket.</span></div></li>
     <li><span class="b" style="color:var(--green);">&#9989;</span><div><strong>Edge cases caught before implementation</strong><br /><span style="color:var(--text-muted);">Permissions, errors, and interactions defined upfront.</span></div></li>
     <li><span class="b" style="color:var(--green);">&#9989;</span><div><strong>Now a core part of our workflow</strong><br /><span style="color:var(--text-muted);">SDD changed how we think, not just how we prompt.</span></div></li>

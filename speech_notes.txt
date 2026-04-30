@@ -2,7 +2,7 @@ SPEECH NOTES — Session 4: Specification-Driven Development
 ============================================================
 Presenter: Nico Izraelski | Commander Mobile Team
 Duracion objetivo: ~45 minutos (speech ~28 min + demo ~10 min + Q&A ~7 min)
-Total slides: 18 (pantalla espera + 17 slides de contenido)
+Total slides: 20 (pantalla espera + 19 slides de contenido)
 
 
 SLIDE 1 — Pantalla de espera (Fun Facts)
@@ -181,20 +181,35 @@ No probamos la mayoria de estas herramientas — los deadlines nos empujaron a c
 [~1 minuto]
 
 
-SLIDE 15 — "SDD in practice at Squire" (Case Study)
-------------------------------------------------------
-"Ahora les quiero contar como aplicamos SDD en Commander Mobile — pero quiero dejar claro que este framework aplica a cualquier equipo que construya features con IA. No necesitan tener legacy para beneficiarse.
+SLIDE 15 — "The starting point" (Case Study)
+----------------------------------------------
+"Ahora les quiero contar como aplicamos SDD en Commander Mobile.
 
-Nuestro desafio era concreto: dos codebases legacy masivos, anios de features, cero documentacion. La informacion estaba tan dispersa que ningun rol individual tenia el panorama completo — ni engineering, ni product, ni QA. Cada uno tenia una parte del rompecabezas.
+El contexto: estamos reconstruyendo Commander — la app que usan los barbers todos los dias para manejar su negocio. El punto de partida era complicado.
 
-Con SDD, la IA extrae specs desde los codebases existentes, las refinamos con nuevos requerimientos y con Figma, generamos planes de implementacion, y ejecutamos fase por fase.
+Teniamos dos codebases legacy con anios de features apilados. Cero documentacion. Las business rules, los permisos, los edge cases — todo enterrado en el codigo. Y lo peor: la informacion estaba en silos. Engineering sabia como funcionaba el codigo, Product sabia la intencion del negocio, QA sabia que cosas se rompian. Pero nadie tenia el panorama completo.
 
-Lo que nos permitio fue dejar de depender de la memoria de las personas y empezar a trabajar sobre documentos vivos."
+Y al principio, la IA lo empeoro. Intentamos promptear a Claude para reconstruir features, pero sin documentacion, alucinaba business rules y se perdia edge cases constantemente. Generaba codigo que compilaba pero no hacia lo que tenia que hacer."
 
-[~2 minutos]
+[~2.5 minutos]
 
 
-SLIDE 16 — "The results" (Case Study)
+SLIDE 16 — "How we applied SDD" (Case Study)
+----------------------------------------------
+"Entonces cambiamos el approach.
+
+Primero: usamos Claude como herramienta de arqueologia. Lo apuntamos a los codebases existentes y le pedimos que documentara lo que encontrara — flujos, reglas de negocio, permisos, edge cases. No le pedimos que construyera nada. Solo que leyera y documentara.
+
+Segundo: tomamos esos specs extraidos, los refinamos con los nuevos requerimientos de Product, y los linkeamos directamente a los frames de Figma. Cada spec se convirtio en el single source of truth del feature.
+
+Y tercero: generamos planes de implementacion que dividian cada feature en fases chicas y testeables. Implementamos una fase a la vez, verificamos que funcionara, y despues pasamos a la siguiente. El rework se desplomo.
+
+Y quiero dejar claro: este workflow aplica a cualquier equipo que construya features con IA. No necesitan tener legacy code para beneficiarse."
+
+[~2.5 minutos]
+
+
+SLIDE 17 — "The results" (Case Study)
 ---------------------------------------
 "Y estos son los resultados concretos.
 
@@ -209,7 +224,7 @@ Y lo mas importante: ahora es parte core de nuestro workflow. SDD cambio como pe
 [~2 minutos]
 
 
-SLIDE 17 — "Meet /build-spec"
+SLIDE 18 — "Meet /build-spec"
 -------------------------------
 "Ahora les quiero mostrar algo practico: /build-spec. Es un skill que ya esta en nuestro marketplace — lo acabamos de subir a engineering-tools.
 
@@ -220,7 +235,7 @@ Sin el skill: decis 'Build me a login page', Claude arranca a codear, cero pregu
 [~2 minutos]
 
 
-SLIDE 18 — "/build-spec in action"
+SLIDE 19 — "/build-spec in action"
 ------------------------------------
 "Aca vemos el skill en la terminal. Primero escanea el proyecto — detecta el stack, encuentra componentes existentes. Despues te hace preguntas especificas. Y al final genera dos archivos: la spec, que incluye flujos, edge cases, y criterios de aceptacion; y el plan, que divide el trabajo en fases con dependencias y riesgos.
 
@@ -242,7 +257,7 @@ Una vez que estas conforme con la spec y el plan, implementas fase por fase."
 "El skill ya esta disponible. Lo instalas con /plugin install engineering-tools@squire-marketplace y listo."
 
 
-SLIDE 19 — Cierre: "It's about thinking, not prompting"
+SLIDE 20 — Cierre: "It's about thinking, not prompting"
 ---------------------------------------------------------
 "Para cerrar: esto se trata de pensar, no de promptear.
 
@@ -262,9 +277,9 @@ Slides 5-7 (Concepto SDD):       ~6.5 min
 Slides 8-10 (Spec, Plan, Ppios): ~7.5 min
 Slides 11-12 (Beneficios+Cuando):~3.5 min
 Slides 13-14 (Ecosistema):       ~2.5 min
-Slides 15-16 (Case Study):       ~4 min
-Slides 17-18 (Demo):             ~2 min speech + ~8-10 min demo
-Slide 19 (Cierre):               ~1 min
+Slides 15-17 (Case Study):       ~7 min
+Slides 18-19 (Demo):             ~2 min speech + ~8-10 min demo
+Slide 20 (Cierre):               ~1 min
 Q&A:                             ~5-7 min
 --------------------------------------------
 TOTAL ESTIMADO:                  ~43-48 min
