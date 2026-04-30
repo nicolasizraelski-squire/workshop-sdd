@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Session 4 — Specification-Driven Development</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0D0D0D; --surface: #1A1A1A; --surface-2: #262626;
+      --border: #333333; --text: #FFFFFF; --text-muted: #B3B3B3;
+      --accent: #007FFF; --accent-light: #279FFF;
+      --green: #31AD5A; --green-bg: rgba(49,173,90,0.16);
+      --orange: #F4983B; --orange-bg: rgba(244,152,59,0.16);
+      --red: #EB4646; --red-bg: rgba(235,70,70,0.16);
+      --blue: #007FFF; --blue-bg: rgba(0,127,255,0.16);
+      --purple: #8B5CF6; --purple-bg: rgba(139,92,246,0.16);
+      --gradient: linear-gradient(135deg, #007FFF, #279FFF, #56B0FF);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { overflow: hidden; height: 100%; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+    /* Waiting screen */
+    #waiting-screen {
+      position: fixed; inset: 0; z-index: 999; background: var(--bg);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      padding: 3rem; text-align: center; transition: opacity 0.5s;
+    }
+    #waiting-screen.hidden { opacity: 0; pointer-events: none; }
+    #waiting-screen h2 { font-size: 1.1rem; color: var(--text-muted); font-weight: 500; margin-bottom: 0.5rem; }
+    #waiting-screen .session-title { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 900; margin-bottom: 2.5rem; }
+    #waiting-screen .session-title .g { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .fun-fact-container {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+      padding: 2.5rem 3rem; max-width: 640px; width: 100%; min-height: 180px;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    .ff-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent-light); margin-bottom: 0.8rem; }
+    .fun-fact-text { font-size: 1.15rem; font-weight: 600; line-height: 1.5; color: var(--text); transition: opacity 0.5s; min-height: 4rem; display: flex; align-items: center; justify-content: center; text-align: center; }
+    .fun-fact-emoji { font-size: 2.2rem; margin-bottom: 0.8rem; transition: opacity 0.5s; }
+    .ff-progress { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--gradient); border-radius: 0 0 16px 16px; animation: ffProgress 8s linear infinite; }
+    @keyframes ffProgress { from { width: 0; } to { width: 100%; } }
+    .waiting-hint { margin-top: 2rem; font-size: 0.75rem; color: var(--text-muted); opacity: 0.5; }
+    .start-btn { margin-top: 1.5rem; background: var(--accent); border: none; border-radius: 8px; padding: 0.6rem 1.5rem; color: white; font-family: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .start-btn:hover { background: var(--accent-light); transform: scale(1.04); }
+
+    /* Slides */
+    .slides-container { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+    .sw { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; opacity: 0; pointer-events: none; visibility: hidden; }
+    .sw.active { opacity: 1; transform: translateX(0) !important; pointer-events: auto; visibility: visible; transition: opacity 0.4s ease, transform 0.4s ease; }
+    .sw.leaving { visibility: visible; transition: opacity 0.4s ease, transform 0.4s ease; }
+    .slide { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 4rem 3rem; max-width: 1060px; margin: 0 auto; text-align: center; }
+
+    /* Nav */
+    .dots-nav { position: fixed; right: 1.2rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 0.45rem; z-index: 100; }
+    .dots-nav a { width: 8px; height: 8px; border-radius: 50%; background: var(--border); display: block; transition: all 0.3s; cursor: pointer; }
+    .dots-nav a:hover, .dots-nav a.active { background: var(--accent-light); transform: scale(1.4); }
+    .slide-counter { position: fixed; bottom: 1.5rem; right: 1.5rem; font-size: 0.7rem; color: var(--text-muted); z-index: 100; font-variant-numeric: tabular-nums; opacity: 0.5; }
+
+    /* Typography */
+    .label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent-light); margin-bottom: 1rem; }
+    h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; line-height: 1.12; margin-bottom: 1.2rem; }
+    h1 .g, h2 .g { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h2 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; line-height: 1.2; margin-bottom: 0.8rem; }
+    .sub { font-size: 1.05rem; color: var(--text-muted); max-width: 640px; margin-bottom: 2rem; }
+    .pill { display: inline-flex; align-items: center; gap: 0.3rem; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; font-size: 0.9rem; font-weight: 700; color: var(--accent-light); }
+
+    /* Bullets */
+    .bullets { text-align: left; width: 100%; display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1rem; }
+    .bullets li { list-style: none; font-size: 1rem; display: flex; align-items: flex-start; gap: 0.6rem; line-height: 1.5; }
+    .bullets li .b { flex-shrink: 0; font-size: 1.1rem; }
+
+    /* Compare */
+    .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; width: 100%; margin-top: 1rem; }
+    @media (max-width: 700px) { .cmp { grid-template-columns: 1fr; } }
+    .cmp-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.8rem; position: relative; overflow: hidden; text-align: left; }
+    .cmp-panel .tag { position: absolute; top: 0; left: 0; right: 0; padding: 0.4rem; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; text-align: center; }
+    .cmp-before .tag { background: var(--red-bg); color: var(--red); }
+    .cmp-after .tag { background: var(--green-bg); color: var(--green); }
+    .cmp-panel ul { list-style: none; padding-top: 1.8rem; display: flex; flex-direction: column; gap: 0.6rem; }
+    .cmp-panel li { font-size: 0.88rem; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+    .cmp-panel li .b { flex-shrink: 0; font-size: 1rem; }
+    .cmp-before li { color: var(--text-muted); }
+
+    /* Flow */
+    .flow-row { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; justify-content: center; margin: 1.5rem 0; }
+    .fb { padding: 0.7rem 1.2rem; border-radius: 10px; font-size: 0.82rem; font-weight: 600; border: 1px solid; text-align: center; }
+    .fb.src { background: var(--blue-bg); border-color: rgba(116,185,255,0.25); color: var(--blue); }
+    .fb.sk { background: rgba(108,92,231,0.12); border-color: rgba(108,92,231,0.25); color: var(--accent-light); }
+    .fb.out { background: var(--green-bg); border-color: rgba(0,184,148,0.25); color: var(--green); }
+    .fb.purple { background: var(--purple-bg); border-color: rgba(139,92,246,0.25); color: var(--purple); }
+    .fa { color: var(--text-muted); font-size: 1.3rem; }
+
+    /* Card */
+    .card-accent { background: rgba(0,127,255,0.05); border: 1px solid var(--accent); border-radius: 14px; padding: 2rem; width: 100%; text-align: center; margin-top: 1.5rem; }
+
+    /* Analogy */
+    .analogy-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 2rem 2.5rem; max-width: 700px; width: 100%; text-align: left; margin: 1rem 0; }
+    .analogy-card .quote { font-size: 1.1rem; font-style: italic; color: var(--text-muted); line-height: 1.7; border-left: 3px solid var(--accent); padding-left: 1.2rem; }
+
+    /* Terminal */
+    .term { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; width: 100%; margin-top: 1.5rem; text-align: left; }
+    .term-bar { background: var(--surface-2); padding: 0.45rem 1rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 6px; font-size: 0.68rem; color: var(--text-muted); }
+    .term-bar .d { display: flex; gap: 5px; }
+    .term-bar .d span { width: 9px; height: 9px; border-radius: 50%; }
+    .term-bar .d .r { background: #EB4646; } .term-bar .d .y { background: #F4983B; } .term-bar .d .gr { background: #31AD5A; }
+    .term-body { padding: 1rem 1.2rem; font-family: 'Courier New', monospace; font-size: 0.78rem; line-height: 1.8; color: var(--text-muted); white-space: pre-wrap; }
+    .term-body .cmd { color: var(--text); } .term-body .hi { color: var(--accent-light); font-weight: 600; }
+    .term-body .ok { color: var(--green); } .term-body .hl { color: var(--orange); } .term-body .fl { color: var(--blue); }
+
+    /* Tools grid */
+    .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; width: 100%; margin-top: 1.5rem; }
+    .tool-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem; text-align: left; }
+    .tool-card .tool-name { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 0.3rem; }
+    .tool-card .tool-tag { font-size: 0.65rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 100px; display: inline-block; margin-bottom: 0.5rem; }
+    .tool-card .tool-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+    a.tool-card { text-decoration: none; color: inherit; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; }
+    a.tool-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,127,255,0.15); }
+    a.tool-card .tool-name { transition: color 0.2s; }
+    a.tool-card:hover .tool-name { color: var(--accent-light); }
+
+    /* Phase blocks */
+    .phases { display: flex; flex-direction: column; gap: 1rem; width: 100%; margin-top: 1rem; }
+    .phase-block { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem 1.8rem; text-align: left; display: flex; gap: 1.2rem; align-items: flex-start; }
+    .phase-num { font-size: 1.8rem; font-weight: 900; line-height: 1; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; flex-shrink: 0; }
+    .phase-content { flex: 1; }
+    .phase-content h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .phase-content p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+    .phase-tag { font-size: 0.65rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 100px; }
+    .phase-tag.eng { background: var(--blue-bg); color: var(--blue); }
+    .phase-tag.prod { background: var(--purple-bg); color: var(--purple); }
+    .phase-tag.qa { background: var(--green-bg); color: var(--green); }
+    .phase-tag.design { background: var(--orange-bg); color: var(--orange); }
+    .phase-tag.lead { background: rgba(255,255,255,0.08); color: var(--text); }
+
+    /* Resources */
+    .resources-list { text-align: left; width: 100%; display: flex; flex-direction: column; gap: 0.7rem; margin-top: 1rem; }
+    .resource-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1.2rem; display: flex; align-items: center; gap: 0.8rem; text-decoration: none; transition: border-color 0.2s; }
+    .resource-item:hover { border-color: var(--accent); }
+    .resource-item .r-icon { font-size: 1.2rem; flex-shrink: 0; }
+    .resource-item .r-title { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+    .resource-item .r-source { font-size: 0.7rem; color: var(--text-muted); }
+
+    /* Big quote */
+    .big-quote { font-size: clamp(1.3rem, 3vw, 1.8rem); font-weight: 800; line-height: 1.4; max-width: 700px; color: var(--text); }
+    .big-quote .g { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    /* Squire logo */
+    .squire-logo { position: fixed; top: 1.2rem; left: 1.5rem; z-index: 200; opacity: 0.7; }
+    .squire-logo svg { height: 22px; width: auto; }
+
+    /* Analogy card */
+    .analogy-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem 2rem; max-width: 640px; margin-top: 1rem; }
+    .analogy-card .quote { font-size: 1rem; color: var(--text-muted); line-height: 1.6; font-style: italic; }
+
+    /* Spectrum bar */
+    .spectrum { display: flex; width: 100%; max-width: 700px; margin-top: 1.5rem; border-radius: 10px; overflow: hidden; }
+    .spectrum-seg { padding: 1rem 0.8rem; text-align: center; font-size: 0.75rem; font-weight: 600; line-height: 1.4; }
+  </style>
+</head>
+<body>
+
+<div class="squire-logo" id="squire-logo">
+  <svg viewBox="0 0 600 100" xmlns="http://www.w3.org/2000/svg">
+    <text x="0" y="76" font-family="Inter, sans-serif" font-weight="900" font-size="88" fill="#FFFFFF" letter-spacing="8">SQUIRE</text>
+  </svg>
+</div>
+
+<div id="waiting-screen">
+  <h2>Claude Code Workshop Series &mdash; Session 4</h2>
+  <div class="session-title"><span class="g">Specification-Driven Development</span></div>
+  <div class="fun-fact-container">
+    <div class="ff-label">Fun Fact</div>
+    <div class="fun-fact-emoji" id="ff-emoji"></div>
+    <div class="fun-fact-text" id="ff-text"></div>
+    <div class="ff-progress" id="ff-bar"></div>
+  </div>
+  <p class="waiting-hint">We'll get started shortly</p>
+  <button class="start-btn" onclick="dismissWaiting()">Start Presentation &#8594;</button>
+</div>
+
+<div class="dots-nav" id="dots-nav" style="display:none;"></div>
+<div class="slide-counter" id="slide-counter" style="display:none;"></div>
+
+<div class="slides-container">
+
+<div class="sw active"><div class="slide">
+  <p class="label">Session 4 &mdash; Claude Code Workshop Series</p>
+  <h1>Stop prompting.<br /><span class="g">Start specifying.</span></h1>
+  <p class="sub">This session is for <strong>everyone</strong> &mdash; engineers, PMs, QA, design, leadership.<br />It's the most efficient workflow we've found for building with AI.</p>
+  <div style="display:flex;gap:0.8rem;flex-wrap:wrap;justify-content:center;">
+    <span class="phase-tag eng">Engineering</span><span class="phase-tag prod">Product</span><span class="phase-tag qa">QA</span><span class="phase-tag design">Design</span><span class="phase-tag lead">Leadership</span>
+  </div>
+</div></div>
+
+<div class="sw"><div class="slide">
+  <p class="label">A quick story</p>
+  <h2>My mom asked me <em>&ldquo;I still don't understand<br />what you do at work&rdquo;</em></h2>
+  <div style="margin-top:1.5rem;border-radius:14px;overflow:hidden;max-width:500px;width:100%;border:1px solid var(--border);">
+    <img src="https://images.unsplash.com/photo-1724745523440-e9a3982d8994?w=700&q=80" alt="Tailor shop" style="width:100%;height:240px;object-fit:cover;display:block;" />
+  </div>
+  <div class="analogy-card" style="margin-top:1rem;">
+    <div class="quote">&ldquo;Imagine you could outsource your repairs to someone <strong style="color:var(--text);">faster</strong>, more <strong style="color:var(--text);">precise</strong>, and at <strong style="color:var(--text);">better scale</strong> &mdash; but they don't know your customers, your business, or your product.&rdquo;</div>
+  </div>
+</div></div>
+
+<div class="sw"><div class="slide">
+  <p class="label">A quick analogy</p>
+  <h2>Two questions</h2>
+  <div style="display:flex;flex-direction:column;gap:1.5rem;max-width:680px;margin-top:1rem;">
+    <div class="analogy-card" style="margin:0;"><div class="quote">Would you review <strong style="color:var(--text);">every stitch</strong> they make &mdash; knowing their execution is almost always better than yours?</div></div>
+    <div class="analogy-card" style="margin:0;border-color:var(--accent);"><div class="quote">Or would you invest your time in writing a <strong style="color:var(--accent-light);">clear specification</strong> of what you need &mdash; expected results, edge cases, acceptance criteria?</div></div>
+  </div>
+  <p style="margin-top:1.5rem;font-size:1.2rem;font-weight:800;color:var(--accent-light);">That's Spec-Driven Development.</p>
+</div></div>
+
+<div class="sw"><div class="slide">
+  <p class="label">The Concept</p>
+  <h2>What is Spec-Driven Development?</h2>
+  <p class="sub" style="margin-bottom:1rem;">A workflow where you invest in detailed specifications <em>before</em> any code is written. The AI implements from the spec, not from vague prompts.</p>
+  <div class="big-quote">&ldquo;Specifications are <span class="g">durable</span>; prompts are ephemeral. Think thoroughly first, build confidently after.&rdquo;</div>
+</div></div>
+
+<div class="sw"><div class="slide">
+  <p class="label">The Concept</p>
+  <h2>The SDD mindset shift</h2>
+  <p class="sub" style="margin-bottom:1.5rem;">It's not about writing better prompts. It's about changing <em>where</em> you invest your time.</p>
+  <div class="spectrum">
+    <div class="spectrum-seg" style="flex:1;background:var(--red-bg);color:var(--red);">Reviewing<br/>every line</div>
+    <div class="spectrum-seg" style="flex:1.2;background:var(--orange-bg);color:var(--orange);">Iterating<br/>on prompts</div>
+    <div class="spectrum-seg" style="flex:1.5;background:var(--blue-bg);color:var(--blue);">Better<br/>prompts</div>
+    <div class="spectrum-seg" style="flex:2;background:var(--green-bg);color:var(--green);">Detailed specs<br/><strong>&#8592; SDD</strong></div>
+  </div>
+  <ul class="bullets" style="margin-top:2rem;max-width:640px;">
+    <li><span class="b" style="color:var(--red);">&#10060;</span><div><strong>Code review mode:</strong> You read every line the AI writes. <span style="color:var(--text-muted);">Doesn't scale.</span></div></li>
+    <li><span class="b" style="color:var(--orange);">&#128260;</span><div><strong>Iteration mode:</strong> You prompt, get output, tweak, re-prompt. <span style="color:var(--text-muted);">Gets close, but wastes cycles.</span></div></li>
+    <li><span class="b" style="color:var(--blue);">&#128172;</span><div><strong>Better prompts:</strong> You write detailed prompts. <span style="color:var(--text-muted);">Better, but prompts are ephemeral.</span></div></li>
+    <li><span class="b" style="color:var(--green);">&#128221;</span><div><strong>SDD:</strong> You write specs that persist, are versionable, and shareable. <span style="color:var(--text-muted);">The AI's job becomes obvious.</span></div></li>
+  </ul>
+</div></div>
+
+<div class="sw"><div class="slide">
+  <p class="label">The Concept</p>
+  <h2>The difference in practice</h2>
+  <div class="cmp" style="margin-top:1rem;">
+    <div class="cmp-panel cmp-before"><div class="tag">Ad-hoc prompting</div><ul>
+      <li><span class="b">&#128172;</span> "Build me a login page"</li><li><span class="b">&#8594;</span> AI starts coding immediately</li><li><span class="b">&#10060;</span> No edge cases considered</li><li><span class="b">&#10060;</span> No design alignment</li><li><span class="b">&#10060;</span> Prompts lost between sessions</li><li><span class="b">&#128260;</span> Constant rework</li>
+    </ul></div>
+    <div class="cmp-panel cmp-after"><div class="tag">Spec-Driven</div><ul>
+      <li><span class="b">&#128221;</span> Detailed spec: flows, endpoints, edge cases</li><li><span class="b">&#8594;</span> AI implements from the spec</li><li><span class="b">&#9989;</span> Decisions made upfront by a human</li><li><span class="b">&#9989;</span> Design, API, permissions defined</li><li><span class="b">&#9989;</span> Specs live in version control</li><li><span class="b">&#9989;</span> First pass is almost always correct</li>
+    </ul></div>
+  </div>
+</div></div>
+
+<div class="sw"><div class="slide">
+  <p class="label">The Concept</p>
+  <h2>What goes into a spec?</h2>
+  <p class="sub" style="margin-bottom:0.5rem;">A spec is not a prompt. It's a <strong>structured document</strong> that captures decisions.</p>
+  <div class="cmp" style="margin-top:1rem;">
+    <div class="cmp-panel" style="border-color:var(--accent);"><div class="tag" style="background:var(--blue-bg);color:var(--blue);">Always include</div><ul style="padding-top:2rem;">
+      <li><span class="b" style="color:var(--blue);">&#128204;</span> User flows &mdash; step by step, screen by screen</li>
+      <li><span class="b" style="color:var(--blue);">&#128204;</span> Acceptance criteria &mdash; what "done" looks like</li>
+      <li><span class="b" style="color:var(--blue);">&#128204;</span> Edge cases &mdash; errors, empty states, permissions</li>
+      <li><span class="b" style="color:var(--blue);">&#128204;</span> API contracts &mdash; endpoints, payloads, responses</li>
+      <li><span class="b" style="color:var(--blue);">&#128204;</span> Design references &mdash; Figma links, exact copy</li>
+    </ul></div>
+    <div class="cmp-panel" style="border-color:var(--green);"><div class="tag" style="background:var(--green-bg);color:var(--green);">When applicable</div><ul style="padding-top:2rem;">
+      <li><span class="b" style="color:var(--green);">&#128205;</span> Role-based permissions matrix</li>
+      <li><span class="b" style="color:var(--green);">&#128205;</span> State diagrams &mdash; what triggers what</li>
+      <li><span class="b" style="color:var(--green);">&#128205;</span> Data model changes</li>
+      <li><span class="b" style="color:var(--green);">&#128205;</span> Migration / backward-compatibility notes</li>
+      <li><span class="b" style="color:var(--green);">&#128205;</span> Known gotchas from existing codebase</li>
+    </ul></div>
+  </div>
+  <div class="card-accent" style="margin-top:1.5rem;padding:1rem;max-width:650px;"><p style="font-size:0.9rem;">The spec is written in <strong>Markdown</strong>. It lives in version control. Anyone can read it.</p></div>
+</div></div>
+
+<div class="sw"><div class="slide">
+  <p class="label">The Concept</p>
+  <h2>From spec to plan</h2>
+  <p class="sub" style="margin-bottom:1rem;">A spec defines <em>what</em> to build. A plan defines <em>how</em> and <em>in what order</em>.</p>
+  <div class="flow-row" style="margin-top:0.5rem;">
+    <div class="fb src">Spec</div><div class="fa">&#8594;</div><div class="fb sk">Plan</div><div class="fa">&#8594;</div><div class="fb out">Implement</div>
+  </div>
+  <div class="cmp" style="margin-top:1.5rem;">
+    <div class="cmp-panel" style="border-color:var(--accent);"><div class="tag" style="background:var(--blue-bg);color:var(--blue);">The spec answers</div><ul style="padding-top:2rem;">
+      <li><span class="b" style="color:var(--blue);">&#128221;</span> What are we building?</li>
+      <li><span class="b" style="color:var(--blue);">&#128221;</span> What should it do? (acceptance criteria)</li>
+      <li><span class="b" style="color:var(--blue);">&#128221;</span> What can go wrong? (edge cases)</li>
+      <li><span class="b" style="color:var(--blue);">&#128221;</span> What does it look like? (Figma)</li>
+    </ul></div>
+    <div class="cmp-panel" style="border-color:var(--green);"><div class="tag" style="background:var(--green-bg);color:var(--green);">The plan answers</div><ul style="padding-top:2rem;">
+      <li><span class="b" style="color:var(--green);">&#9889;</span> What do we build first? (dependencies)</li>
+      <li><span class="b" style="color:var(--green);">&#9889;</span> What already exists? (reuse opportunities)</li>
+      <li><span class="b" style="color:var(--green);">&#9889;</span> What's shared across tickets? (infra)</li>
+      <li><span class="b" style="color:var(--green);">&#9889;</span> How do we break it into phases?</li>
+    </ul></div>
+  </div>
+  <div class="card-accent" style="margin-top:1.5rem;padding:1rem;max-width:680px;"><p style="font-size:0.9rem;">Without a plan, even a great spec leads to disorganized implementation. The plan turns the spec into <strong>actionable, ordered work</strong>.</p></div>
+</div></div>
+
+<div class="sw"><div class="slide">
+  <p class="label">The Concept</p>
+  <h2>Key principles</h2>
+  <p class="sub" style="margin-bottom:0.5rem;">Rules that make SDD work in practice &mdash; for any team, any codebase.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-top:1rem;max-width:750px;">
+    <div class="tool-card" style="flex:1;min-width:200px;"><div class="tool-name">&#128209; 1 ticket = 1 spec</div><div class="tool-desc">Each independently demo-able flow gets one specification and one ticket. No ambiguity about scope.</div></div>
+    <div class="tool-card" style="flex:1;min-width:200px;"><div class="tool-name">&#128269; Reuse first</div><div class="tool-desc">Always search the existing codebase before creating new components. AI tends to create new things by default &mdash; tell it to look first.</div></div>
+    <div class="tool-card" style="flex:1;min-width:200px;"><div class="tool-name">&#127912; Respect design</div><div class="tool-desc">Designs are not suggestions. Exact copy, spacing, colors, interactions &mdash; the spec references Figma frames directly.</div></div>
+    <div class="tool-card" style="flex:1;min-width:200px;"><div class="tool-name">&#128221; Document gotchas</div><div class="tool-desc">Record discoveries after every phase. Prevent the next person from re-discovering known issues.</div></div>
+  </div>
+  <div class="card-accent" style="margin-top:1.5rem;padding:1.2rem;max-width:650px;"><p style="font-size:1rem;">When applied correctly, <strong>the spec is a reflection of the code</strong> &mdash; written in Markdown.</p></div>
+</div></div>
+
+<div class="sw"><div class="slide">
+  <p class="label">The Concept</p>
+  <h2>Who benefits from SDD?</h2>
+  <p class="sub" style="margin-bottom:1rem;">SDD is not just an engineering practice. It improves alignment across the entire team.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-top:0.5rem;max-width:750px;">
+    <div class="tool-card" style="flex:1;min-width:200px;"><div class="tool-name">&#128187; Engineers</div><div class="tool-desc">Implement from clear requirements instead of guessing. Less rework, more confidence.</div></div>
+    <div class="tool-card" style="flex:1;min-width:200px;"><div class="tool-name">&#128203; Product</div><div class="tool-desc">Get real documentation in Jira &mdash; acceptance criteria, flows, edge cases &mdash; not just ticket titles.</div></div>
+    <div class="tool-card" style="flex:1;min-width:200px;"><div class="tool-name">&#128270; QA</div><div class="tool-desc">Know exactly what to test. Acceptance criteria are defined before implementation starts.</div></div>
+    <div class="tool-card" style="flex:1;min-width:200px;"><div class="tool-name">&#127912; Design</div><div class="tool-desc">Fidelity is enforced. The spec references Figma directly &mdash; no "close enough".</div></div>
+  </div>
+  <div class="card-accent" style="margin-top:1.5rem;padding:1rem;max-width:650px;"><p style="font-size:0.9rem;">SDD creates a <strong>shared source of truth</strong> that everyone can reference &mdash; before, during, and after implementation.</p></div>
+</div></div>
+
+<div class="sw"><div class="slide">
+  <p class="label">The Concept</p>
+  <h2>When should you use SDD?</h2>
+  <div class="cmp" style="margin-top:1rem;">
+    <div class="cmp-panel cmp-after" style="border-color:var(--accent);"><div class="tag" style="background:var(--blue-bg);color:var(--blue);">Use SDD</div><ul>
+      <li><span class="b">&#9989;</span> Feature touches 3+ screens</li><li><span class="b">&#9989;</span> Multiple user roles or permissions</li><li><span class="b">&#9989;</span> Cross-team handoffs (eng &#8594; QA &#8594; product)</li><li><span class="b">&#9989;</span> Architecture decisions that affect future work</li><li><span class="b">&#9989;</span> Would take more than a day to implement</li>
+    </ul></div>
+    <div class="cmp-panel cmp-before"><div class="tag">Skip SDD</div><ul>
+      <li><span class="b">&#8594;</span> Isolated bug fixes</li><li><span class="b">&#8594;</span> Styling tweaks</li><li><span class="b">&#8594;</span> Single-file refactors</li><li><span class="b">&#8594;</span> Quick prototypes / spikes</li>
+    </ul></div>
+  </div>
+  <p style="margin-top:1.5rem;font-size:0.9rem;color:var(--text-muted);max-width:500px;"><strong style="color:var(--text);">Rule of thumb:</strong> If you'd spend more than a day implementing it, spend a few hours speccing it first.</p>
+</div></div>
+
+<div class="sw"><div class="slide">
+  <p class="label">The Ecosystem</p>
+  <h2>This is a movement, not just our idea</h2>
+  <p class="sub" style="margin-bottom:0.5rem;">SDD is being adopted across the industry.</p>
+  <div class="tools-grid">
+    <a class="tool-card" href="https://github.com/github/spec-kit" target="_blank"><div class="tool-name">GitHub Spec Kit &#8599;</div><div class="tool-tag" style="background:var(--blue-bg);color:var(--blue);">Official &mdash; GitHub</div><div class="tool-desc">GitHub's own open-source toolkit. 7-step workflow with templates and CLI. If GitHub built it, the concept has weight.</div></a>
+    <a class="tool-card" href="https://github.com/ezyang/gsd" target="_blank"><div class="tool-name">GSD (Get Shit Done) &#8599;</div><div class="tool-tag" style="background:var(--green-bg);color:var(--green);">12K+ stars</div><div class="tool-desc">Most popular SDD framework for Claude Code. Meta-prompting with phases: discuss &#8594; plan &#8594; execute &#8594; verify &#8594; ship.</div></a>
+    <a class="tool-card" href="https://github.com/NicolasAG/superpowers" target="_blank"><div class="tool-name">Superpowers &#8599;</div><div class="tool-tag" style="background:var(--purple-bg);color:var(--purple);">Claude Plugin</div><div class="tool-desc">Agentic skills framework enforcing planning, TDD, and code review with subagents. Installs as a Claude plugin.</div></a>
+  </div>
+</div></div>
+
+<div class="sw"><div class="slide">
+  <p class="label">The Ecosystem</p>
+  <h2>Who's talking about SDD?</h2>
+  <div class="tools-grid" style="max-width:700px;">
+    <a class="tool-card" href="https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html" target="_blank"><div class="tool-name">Martin Fowler &#8599;</div><div class="tool-desc">Wrote about SDD tools (Kiro, spec-kit, Tessl) as a key emerging pattern in AI-assisted engineering.</div></a>
+    <a class="tool-card" href="https://www.thoughtworks.com/en-us/insights/blog/agile-engineering-practices/spec-driven-development-unpacking-2025-new-engineering-practices" target="_blank"><div class="tool-name">Thoughtworks &#8599;</div><div class="tool-desc">Listed SDD as one of 2025's key new AI-assisted engineering practices in their technology radar.</div></a>
+    <a class="tool-card" href="https://medium.com/@addyosmani/my-llm-coding-workflow-going-into-2026-52fe1681325e" target="_blank"><div class="tool-name">Addy Osmani (Google) &#8599;</div><div class="tool-desc">Featured SDD as a core part of his LLM coding workflow for 2026.</div></a>
+  </div>
+  <p style="margin-top:1.5rem;font-size:0.85rem;color:var(--text-muted);max-width:600px;">We haven't tested most of these &mdash; tight deadlines pushed us to build something tailored. But they're solid options. <strong style="color:var(--text);">If you've tried any, share your experience!</strong></p>
+</div></div>
+
+<div class="sw"><div class="slide">
+  <p class="label">Case Study &mdash; Commander Mobile</p>
+  <h2>SDD in practice at Squire</h2>
+  <div class="cmp" style="margin-top:1.5rem;">
+    <div class="cmp-panel cmp-before"><div class="tag">The challenge</div><ul>
+      <li><span class="b">&#128466;</span> Two legacy codebases &mdash; years of features, zero documentation</li>
+      <li><span class="b">&#128466;</span> Business rules, permissions, edge cases &mdash; all buried in code</li>
+      <li><span class="b">&#128466;</span> Information scattered &mdash; no single role had the full picture</li>
+    </ul></div>
+    <div class="cmp-panel cmp-after"><div class="tag">What SDD gave us</div><ul>
+      <li><span class="b">&#9889;</span> AI extracts specs from existing codebases</li>
+      <li><span class="b">&#9889;</span> Specs refined with new requirements &amp; Figma</li>
+      <li><span class="b">&#9889;</span> Plans generated, reviewed, then implemented phase by phase</li>
+    </ul></div>
+  </div>
+  <div class="card-accent" style="margin-top:1.5rem;padding:1rem;max-width:680px;"><p style="font-size:0.9rem;">This workflow applies to <strong>any team building features with AI</strong> &mdash; you don't need legacy code to benefit.</p></div>
+</div></div>
+
+<div class="sw"><div class="slide">
+  <p class="label">Case Study &mdash; Commander Mobile</p>
+  <h2>The results</h2>
+  <div class="stats" style="margin-top:1.5rem;">
+    <div class="st"><div class="n">3-4 &#8594; 1-2</div><div class="l">iterations per feature</div></div>
+    <div class="st"><div class="n">~60%</div><div class="l">less rework</div></div>
+    <div class="st"><div class="n">3-4 pg</div><div class="l">specs per Jira ticket<br/>(previously just a title)</div></div>
+  </div>
+  <ul class="bullets" style="margin-top:2rem;max-width:620px;">
+    <li><span class="b" style="color:var(--green);">&#9989;</span><div><strong>Real documentation that stays updated</strong><br /><span style="color:var(--text-muted);">Acceptance criteria, testing notes, and specs in every ticket.</span></div></li>
+    <li><span class="b" style="color:var(--green);">&#9989;</span><div><strong>Edge cases caught before implementation</strong><br /><span style="color:var(--text-muted);">Permissions, errors, and interactions defined upfront.</span></div></li>
+    <li><span class="b" style="color:var(--green);">&#9989;</span><div><strong>Now a core part of our workflow</strong><br /><span style="color:var(--text-muted);">SDD changed how we think, not just how we prompt.</span></div></li>
+  </ul>
+</div></div>
+
+<div class="sw"><div class="slide">
+  <p class="label">Live Demo</p>
+  <h1>Meet <span class="g">/build-spec</span></h1>
+  <p class="sub">A skill that forces you to think before you build.<br />Every feature request becomes a well-defined specification.</p>
+  <div class="flow-row" style="margin-bottom:1.5rem;">
+    <div class="fb src">&#128269; Discover</div><div class="fa">&#8594;</div><div class="fb sk">&#128221; Specify</div><div class="fa">&#8594;</div><div class="fb purple">&#9889; Plan</div>
+  </div>
+  <div class="cmp">
+    <div class="cmp-panel cmp-before"><div class="tag">Without the skill</div><ul>
+      <li><span class="b">&#128172;</span> "Build me a login page"</li><li><span class="b">&#8594;</span> Claude starts coding immediately</li><li><span class="b">&#10060;</span> No questions asked</li><li><span class="b">&#128260;</span> Rework inevitable</li>
+    </ul></div>
+    <div class="cmp-panel cmp-after"><div class="tag">With /build-spec</div><ul>
+      <li><span class="b">&#128269;</span> Reads your codebase first</li><li><span class="b">&#10067;</span> Asks targeted questions</li><li><span class="b">&#128221;</span> Generates spec &amp; plan</li><li><span class="b">&#9989;</span> Then implements from the spec</li>
+    </ul></div>
+  </div>
+</div></div>
+
+<div class="sw"><div class="slide">
+  <p class="label">Live Demo</p>
+  <h2>/build-spec in action</h2>
+  <div class="term">
+    <div class="term-bar"><div class="d"><span class="r"></span><span class="y"></span><span class="gr"></span></div><span style="margin-left:auto;">claude-code</span></div>
+    <div class="term-body"><span class="cmd">$</span> <span class="hi">/build-spec</span> <span class="ok">I want to create a login page</span>
+
+<span class="hi">&#9654; Phase 1: DISCOVER</span>
+<span class="fl">  Scanning project structure...</span>
+<span class="fl">  Found: React Native + TypeScript + React Navigation</span>
+<span class="fl">  Found: existing Button, TextInput, useApi components</span>
+<span class="ok">  &#10003; Codebase analysis complete</span>
+
+<span class="hi">&#9654; Phase 1b: Interview</span>
+<span class="hl">&#10067; What authentication methods should be supported?</span>
+   <span class="fl">Options: Email/password, OAuth (Google, Apple), SSO, Magic link</span>
+
+<span class="hl">&#10067; Is there a Figma design for this screen?</span>
+   <span class="fl">If yes, share the link so we can match it exactly.</span>
+
+<span class="hl">&#10067; What should happen on failed login?</span>
+   <span class="fl">Error message? Account lockout after N attempts? Rate limiting?</span>
+
+<span class="hi">&#9654; Phase 2: SPECIFY — Building specification...</span>
+<span class="hi">&#9654; Phase 3: PLAN — Generating implementation plan...</span>
+
+<span class="ok">&#10003; Generated:</span>
+  <span class="fl">specs/login_page_spec.md</span>   &#8592; Spec (flows, edge cases, acceptance criteria)
+  <span class="fl">specs/login_page_plan.md</span>   &#8592; Plan (phased, with dependencies &amp; risks)
+
+<span class="ok">Ready for review.</span> Approve the spec, then implement phase by phase.</div>
+  </div>
+  <div class="card-accent" style="margin-top:1rem;padding:1rem;"><p style="font-size:0.95rem;">&#128640; <strong>Available now.</strong> Install it with: <code style="background:var(--surface-2);padding:0.2rem 0.5rem;border-radius:4px;font-family:'Courier New',monospace;font-size:0.85rem;">/plugin install engineering-tools@squire-marketplace</code></p></div>
+</div></div>
+
+<div class="sw"><div class="slide">
+  <div class="big-quote" style="margin-bottom:2.5rem;">It's about <span class="g">thinking</span>, not prompting.</div>
+  <h3 style="font-size:1rem;font-weight:700;margin-bottom:0.8rem;">Further Reading</h3>
+  <div class="resources-list" style="max-width:580px;margin:0 auto;">
+    <a class="resource-item" href="https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/" target="_blank"><span class="r-icon">&#128218;</span><span class="r-text"><span class="r-title">Spec-Driven Development with AI</span><span class="r-source">GitHub Blog</span></span></a>
+    <a class="resource-item" href="https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html" target="_blank"><span class="r-icon">&#128218;</span><span class="r-text"><span class="r-title">Understanding SDD: Kiro, spec-kit, and Tessl</span><span class="r-source">Martin Fowler</span></span></a>
+    <a class="resource-item" href="https://www.thoughtworks.com/en-us/insights/blog/agile-engineering-practices/spec-driven-development-unpacking-2025-new-engineering-practices" target="_blank"><span class="r-icon">&#128218;</span><span class="r-text"><span class="r-title">SDD: Unpacking 2025's Key New Practice</span><span class="r-source">Thoughtworks</span></span></a>
+    <a class="resource-item" href="https://medium.com/@addyosmani/my-llm-coding-workflow-going-into-2026-52fe1681325e" target="_blank"><span class="r-icon">&#128218;</span><span class="r-text"><span class="r-title">My LLM Coding Workflow Going Into 2026</span><span class="r-source">Addy Osmani</span></span></a>
+  </div>
+  <div style="margin-top:2rem;color:var(--text-muted);font-size:0.85rem;"><strong style="color:var(--text);">Nico Izraelski</strong><br /><span style="color:var(--accent-light);font-weight:600;">Commander Mobile Team</span></div>
+</div></div>
+
+</div>
+
+<script>
+  const funFacts = [
+    { emoji: "&#128136;", text: "The first barbershop dates back to 3500 BC in Egypt. Barbers also performed dental work and minor surgery." },
+    { emoji: "&#128135;", text: "The barber pole's red and white stripes originally represented blood and bandages &mdash; barbers were also surgeons." },
+    { emoji: "&#9986;&#65039;", text: "Ancient Roman barbers (tonsors) were the main news network. Barbershops were the original social media." },
+    { emoji: "&#128131;", text: "In medieval times, barbers were called 'barber-surgeons' and belonged to the same guild as doctors." },
+    { emoji: "&#127987;&#65039;", text: "The word 'barber' comes from the Latin 'barba', meaning beard. Simple, but nobody ever guesses it." },
+    { emoji: "&#128081;", text: "Alexander the Great ordered all his soldiers to shave their beards so enemies couldn't grab them in battle." },
+    { emoji: "&#9917;", text: "AC Milan's legendary barber Vergottini cut the team's hair before every match for 30+ years. Superstition or spec?" },
+    { emoji: "&#128176;", text: "The most expensive haircut ever recorded cost $16,000 &mdash; by Stuart Phillips in London. That's one pricey spec." },
+    { emoji: "&#128132;", text: "In ancient Greece, a man's hairstyle indicated his social status. A bad cut could literally cost you your reputation." },
+    { emoji: "&#127758;", text: "There are over 80,000 barbershops in the US alone. SQUIRE powers thousands of them." },
+    { emoji: "&#128170;", text: "Barbers in the 1800s also pulled teeth. No anesthesia, no spec &mdash; just vibes. Don't build software like that." },
+    { emoji: "&#129490;", text: "King Louis XIV of France popularized wigs after going bald at 17. The ultimate 'fake it till you make it'." },
+    { emoji: "&#128241;", text: "70% of barbershop clients now book online. If your shop isn't digital, you're losing chairs." },
+    { emoji: "&#9986;&#65039;", text: "The straight razor was invented around 1740 in Sheffield, England. Still the gold standard 280+ years later." },
+    { emoji: "&#127926;", text: "Barbershop quartets started in actual barbershops &mdash; clients would sing together while waiting for their turn." },
+    { emoji: "&#129504;", text: "A good barber asks questions before cutting. A good engineer writes specs before coding. Same energy." },
+    { emoji: "&#128200;", text: "The barbershop industry is worth $46 billion globally and growing 4% yearly. Not bad for a 5,000-year-old trade." },
+    { emoji: "&#128131;", text: "Sweeney Todd, the 'Demon Barber of Fleet Street', first appeared in a penny dreadful in 1846. Worst Yelp review ever." },
+    { emoji: "&#128142;", text: "In Turkey, barbers finish every haircut with a face massage and ear singeing with an open flame. Zero complaints." },
+    { emoji: "&#127752;", text: "In Japan, the spinning barber pole goes the opposite direction. Because of course it does." },
+  ];
+  let ffIndex = 0;
+  const ffEmoji = document.getElementById('ff-emoji');
+  const ffText = document.getElementById('ff-text');
+  const ffBar = document.getElementById('ff-bar');
+  function showFact() {
+    const f = funFacts[ffIndex];
+    ffText.style.opacity = '0'; ffEmoji.style.opacity = '0';
+    setTimeout(() => { ffEmoji.innerHTML = f.emoji; ffText.innerHTML = f.text; ffText.style.opacity = '1'; ffEmoji.style.opacity = '1'; }, 400);
+    ffIndex = (ffIndex + 1) % funFacts.length;
+    ffBar.style.animation = 'none'; ffBar.offsetHeight; ffBar.style.animation = 'ffProgress 8s linear infinite';
+  }
+  showFact(); setInterval(showFact, 8000);
+
+  const wrappers = document.querySelectorAll('.sw');
+  const total = wrappers.length;
+  const counter = document.getElementById('slide-counter');
+  const dotsNav = document.getElementById('dots-nav');
+  let cur = 0, busy = false;
+
+  for (let i = 0; i < total; i++) {
+    const a = document.createElement('a');
+    a.href = '#';
+    if (i === 0) a.classList.add('active');
+    a.addEventListener('click', e => { e.preventDefault(); go(i); });
+    dotsNav.appendChild(a);
+  }
+  const dots = dotsNav.querySelectorAll('a');
+  counter.textContent = '1 / ' + total;
+
+  function go(idx) {
+    if (idx < 0 || idx >= total || idx === cur || busy) return;
+    busy = true;
+    const forward = idx > cur;
+    const prev = wrappers[cur];
+    const next = wrappers[idx];
+
+    // Position next slide off-screen (no transition yet)
+    next.style.transform = forward ? 'translateX(60px)' : 'translateX(-60px)';
+    next.offsetHeight; // force reflow
+
+    // Start leaving animation on prev
+    prev.classList.remove('active');
+    prev.classList.add('leaving');
+    prev.style.transform = forward ? 'translateX(-60px)' : 'translateX(60px)';
+    prev.style.opacity = '0';
+
+    // Activate next slide (transition kicks in via .active class)
+    next.classList.add('active');
+
+    // Update nav
+    dots.forEach(d => d.classList.remove('active'));
+    if (dots[idx]) dots[idx].classList.add('active');
+    counter.textContent = (idx + 1) + ' / ' + total;
+    cur = idx;
+
+    // Cleanup after animation
+    setTimeout(() => {
+      prev.classList.remove('leaving');
+      prev.style.transform = '';
+      prev.style.opacity = '';
+      next.style.transform = '';
+      busy = false;
+    }, 450);
+  }
+
+  function dismissWaiting() {
+    const ws = document.getElementById('waiting-screen');
+    ws.classList.add('hidden');
+    dotsNav.style.display = 'flex';
+    counter.style.display = 'block';
+    setTimeout(() => ws.style.display = 'none', 600);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (document.getElementById('waiting-screen') && document.getElementById('waiting-screen').style.display !== 'none') {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight') { dismissWaiting(); e.preventDefault(); }
+      return;
+    }
+    switch (e.key) {
+      case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': e.preventDefault(); go(cur + 1); break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp': e.preventDefault(); go(cur - 1); break;
+      case 'Home': e.preventDefault(); go(0); break;
+      case 'End': e.preventDefault(); go(total - 1); break;
+    }
+  });
+</script>
+</body>
+</html>
