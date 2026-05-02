@@ -159,9 +159,12 @@
 
     /* Stats */
     .stats { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; }
-    .st { text-align: center; min-width: 160px; }
+    .st { text-align: center; min-width: 180px; position: relative; cursor: help; }
     .st .n { font-size: 2.4rem; font-weight: 900; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.2; }
     .st .l { font-size: 0.95rem; color: var(--text-muted); margin-top: 0.3rem; line-height: 1.4; }
+    .st .tooltip { position: absolute; bottom: calc(100% + 12px); left: 50%; transform: translateX(-50%); background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; width: 340px; text-align: left; opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 50; box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+    .st:hover .tooltip { opacity: 1; pointer-events: auto; }
+    .st .tooltip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: var(--border); }
 
     /* Spectrum bar */
     .spectrum { display: flex; width: 100%; max-width: 700px; margin-top: 1.5rem; border-radius: 10px; overflow: hidden; }
@@ -282,7 +285,7 @@
       <li><span class="b" style="color:var(--green);">&#128205;</span> Known gotchas from existing codebase</li>
     </ul></div>
   </div>
-  <div class="card-accent" style="margin-top:1.5rem;padding:1rem;max-width:650px;"><p style="font-size:0.9rem;">The spec is written in <strong>Markdown</strong>. It lives in version control. Anyone can read it.</p></div>
+  <div class="card-accent" style="margin-top:1.5rem;padding:1rem;max-width:650px;"><p style="font-size:0.9rem;">The spec lives in <strong>version control</strong>. Anyone on the team can read it and reference it.</p></div>
 </div></div>
 
 <div class="sw"><div class="slide">
@@ -312,14 +315,14 @@
 <div class="sw"><div class="slide">
   <p class="label">The Concept</p>
   <h2>Key principles</h2>
-  <p class="sub" style="margin-bottom:0.5rem;">Rules that make SDD work in practice &mdash; for any team, any codebase.</p>
+  <p class="sub" style="margin-bottom:0.5rem;">Rules that make SDD work in practice.</p>
   <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-top:1rem;max-width:750px;">
     <div class="tool-card" style="flex:1;min-width:200px;"><div class="tool-name">&#128209; 1 ticket = 1 spec</div><div class="tool-desc">Each independently demo-able flow gets one specification and one ticket. No ambiguity about scope.</div></div>
     <div class="tool-card" style="flex:1;min-width:200px;"><div class="tool-name">&#128269; Reuse first</div><div class="tool-desc">Always search the existing codebase before creating new components. AI tends to create new things by default &mdash; tell it to look first.</div></div>
     <div class="tool-card" style="flex:1;min-width:200px;"><div class="tool-name">&#127912; Respect design</div><div class="tool-desc">Designs are not suggestions. Exact copy, spacing, colors, interactions &mdash; the spec references Figma frames directly.</div></div>
     <div class="tool-card" style="flex:1;min-width:200px;"><div class="tool-name">&#128221; Document gotchas</div><div class="tool-desc">Record discoveries after every phase. Prevent the next person from re-discovering known issues.</div></div>
   </div>
-  <div class="card-accent" style="margin-top:1.5rem;padding:1.2rem;max-width:650px;"><p style="font-size:1rem;">When applied correctly, <strong>the spec is a reflection of the code</strong> &mdash; written in Markdown.</p></div>
+  <div class="card-accent" style="margin-top:1.5rem;padding:1.2rem;max-width:650px;"><p style="font-size:1rem;">When applied correctly, <strong>the spec is a reflection of the code</strong> &mdash; readable by anyone.</p></div>
 </div></div>
 
 <div class="sw"><div class="slide">
@@ -368,17 +371,16 @@
     <a class="tool-card" href="https://www.thoughtworks.com/en-us/insights/blog/agile-engineering-practices/spec-driven-development-unpacking-2025-new-engineering-practices" target="_blank"><div class="tool-name">Thoughtworks &#8599;</div><div class="tool-desc">Listed SDD as one of 2025's key new AI-assisted engineering practices in their technology radar.</div></a>
     <a class="tool-card" href="https://medium.com/@addyosmani/my-llm-coding-workflow-going-into-2026-52fe1681325e" target="_blank"><div class="tool-name">Addy Osmani (Google) &#8599;</div><div class="tool-desc">Featured SDD as a core part of his LLM coding workflow for 2026.</div></a>
   </div>
-  <p style="margin-top:1.5rem;font-size:0.85rem;color:var(--text-muted);max-width:600px;">We haven't tested most of these &mdash; tight deadlines pushed us to build something tailored. But they're solid options. <strong style="color:var(--text);">If you've tried any, share your experience!</strong></p>
 </div></div>
 
 <div class="sw"><div class="slide">
   <p class="label">Case Study &mdash; Commander Mobile</p>
   <h2>The starting point</h2>
-  <p class="sub" style="margin-bottom:1.5rem;">We were rebuilding Commander &mdash; the app barbers use every day to manage their business.</p>
+  <p class="sub" style="margin-bottom:1.5rem;">Rewriting Commander &mdash; two codebases, years of features, a lot of accumulated complexity.</p>
   <ul class="bullets" style="max-width:720px;">
-    <li><span class="b" style="color:var(--red);">&#128466;</span><div><strong>Two legacy codebases</strong> &mdash; years of features stacked on top of each other, zero documentation. Business rules buried deep in the code.</div></li>
-    <li><span class="b" style="color:var(--red);">&#128466;</span><div><strong>Knowledge silos</strong> &mdash; no single role had the full picture. Engineers knew the code, Product knew the intent, QA knew the bugs. Nobody had it all.</div></li>
-    <li><span class="b" style="color:var(--red);">&#128466;</span><div><strong>AI made it worse at first</strong> &mdash; we tried prompting Claude to rebuild features, but without documentation it hallucinated business rules and missed edge cases constantly.</div></li>
+    <li><span class="b" style="color:var(--orange);">&#128466;</span><div><strong>Hard to rewrite from features alone</strong> &mdash; edge cases, business rules, and hidden paths were easy to miss when working only from the existing code.</div></li>
+    <li><span class="b" style="color:var(--orange);">&#128466;</span><div><strong>Hard to get the full picture</strong> &mdash; important context was spread across people and roles, making it difficult to piece together the complete panorama.</div></li>
+    <li><span class="b" style="color:var(--orange);">&#128466;</span><div><strong>AI alone wasn't enough</strong> &mdash; we started with Cursor, then Claude, but rebuilding features directly from code led to missed rules and incomplete results.</div></li>
   </ul>
 </div></div>
 
@@ -406,15 +408,25 @@
   <p class="label">Case Study &mdash; Commander Mobile</p>
   <h2>The results</h2>
   <div class="stats" style="margin-top:1.5rem;">
-    <div class="st"><div class="n">3-4 &#8594; 1-2</div><div class="l">iterations per feature</div></div>
-    <div class="st"><div class="n">~60%</div><div class="l">less rework</div></div>
-    <div class="st"><div class="n">3-4 pg</div><div class="l">specs per Jira ticket<br/>(previously just a title)</div></div>
+    <div class="st">
+      <div class="n">20h &#8594; 5h</div><div class="l">median PR cycle<br/>(created &#8594; merge)</div>
+      <div class="tooltip">Median time from PR opened to merged on <strong>develop</strong>. Before SDD (Jan 6 &ndash; Mar 3, 2026): 141 PRs, 20.0h median. After SDD (Mar 4 &ndash; Apr 30, 2026): 241 PRs, 5.3h median. Source: <code>gh pr list --state merged --base develop --json createdAt,mergedAt</code></div>
+    </div>
+    <div class="st">
+      <div class="n">~2&times;</div><div class="l">features shipped<br/>per 8-week window</div>
+      <div class="tooltip">Distinct Jira tickets (SQR-XXXX) in PR titles/branch names merged to <strong>develop</strong>. Before SDD (Jan 6 &ndash; Mar 3, 2026): 52 tickets across 141 PRs from 7 authors. After SDD (Mar 4 &ndash; Apr 30, 2026): 101 tickets across 241 PRs from 11 authors. Team grew by 4 engineers; per-developer throughput grew ~24%. Source: <code>gh pr list --state merged --base develop --json title,headRefName</code></div>
+    </div>
+    <div class="st">
+      <div class="n">0 &#8594; 49</div><div class="l">spec docs in<br/>version control</div>
+      <div class="tooltip">Count of *_spec.md files committed to the repo. Before SDD adoption: 0. After (8-week window, Mar 4 &ndash; Apr 30, 2026): 49 specs. Source: <code>find docs -name "*_spec.md" | wc -l</code></div>
+    </div>
   </div>
   <ul class="bullets" style="margin-top:2rem;max-width:700px;">
-    <li><span class="b" style="color:var(--green);">&#9989;</span><div><strong>Real documentation that stays updated</strong><br /><span style="color:var(--text-muted);">Acceptance criteria, testing notes, and specs in every ticket.</span></div></li>
-    <li><span class="b" style="color:var(--green);">&#9989;</span><div><strong>Edge cases caught before implementation</strong><br /><span style="color:var(--text-muted);">Permissions, errors, and interactions defined upfront.</span></div></li>
+    <li><span class="b" style="color:var(--green);">&#9989;</span><div><strong>Specs feed directly into Jira</strong><br /><span style="color:var(--text-muted);">Acceptance criteria, testing notes, and edge cases extracted from specs into every ticket.</span></div></li>
+    <li><span class="b" style="color:var(--green);">&#9989;</span><div><strong>Edge cases caught before implementation</strong><br /><span style="color:var(--text-muted);">Permissions, errors, and interactions defined upfront &mdash; not discovered in production.</span></div></li>
     <li><span class="b" style="color:var(--green);">&#9989;</span><div><strong>Now a core part of our workflow</strong><br /><span style="color:var(--text-muted);">SDD changed how we think, not just how we prompt.</span></div></li>
   </ul>
+  <a class="tool-card" href="https://nicolasizraelski-squire.github.io/commander-spec-driven-development/" target="_blank" style="margin-top:1.5rem;max-width:700px;display:block;"><div class="tool-name">&#128218; Our full SDD framework &#8599;</div><div class="tool-desc">Step-by-step guide with all skills and workflows. If you want to implement SDD in your team, start here.</div></a>
 </div></div>
 
 <div class="sw"><div class="slide">
@@ -471,14 +483,15 @@
 
 <div class="sw"><div class="slide">
   <div class="big-quote" style="margin-bottom:2.5rem;">It's about <span class="g">thinking</span>, not prompting.</div>
-  <h3 style="font-size:1rem;font-weight:700;margin-bottom:0.8rem;">Further Reading</h3>
-  <div class="resources-list" style="max-width:580px;margin:0 auto;">
-    <a class="resource-item" href="https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/" target="_blank"><span class="r-icon">&#128218;</span><span class="r-text"><span class="r-title">Spec-Driven Development with AI</span><span class="r-source">GitHub Blog</span></span></a>
-    <a class="resource-item" href="https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html" target="_blank"><span class="r-icon">&#128218;</span><span class="r-text"><span class="r-title">Understanding SDD: Kiro, spec-kit, and Tessl</span><span class="r-source">Martin Fowler</span></span></a>
-    <a class="resource-item" href="https://www.thoughtworks.com/en-us/insights/blog/agile-engineering-practices/spec-driven-development-unpacking-2025-new-engineering-practices" target="_blank"><span class="r-icon">&#128218;</span><span class="r-text"><span class="r-title">SDD: Unpacking 2025's Key New Practice</span><span class="r-source">Thoughtworks</span></span></a>
-    <a class="resource-item" href="https://medium.com/@addyosmani/my-llm-coding-workflow-going-into-2026-52fe1681325e" target="_blank"><span class="r-icon">&#128218;</span><span class="r-text"><span class="r-title">My LLM Coding Workflow Going Into 2026</span><span class="r-source">Addy Osmani</span></span></a>
+  <h3 style="font-size:1.8rem;font-weight:700;margin-bottom:0.5rem;">Questions?</h3>
+  <p style="color:var(--text-muted);font-size:1rem;margin-bottom:2rem;">Thank you!</p>
+  <div class="q-anim" style="display:flex;gap:1.2rem;justify-content:center;margin-bottom:2.5rem;">
+    <span style="font-size:2.5rem;animation:qBounce 2s ease-in-out infinite;">&#128172;</span>
+    <span style="font-size:2.5rem;animation:qBounce 2s ease-in-out 0.3s infinite;">&#129300;</span>
+    <span style="font-size:2.5rem;animation:qBounce 2s ease-in-out 0.6s infinite;">&#128161;</span>
   </div>
-  <div style="margin-top:2rem;color:var(--text-muted);font-size:0.85rem;"><strong style="color:var(--text);">Nico Izraelski</strong><br /><span style="color:var(--accent-light);font-weight:600;">Commander Mobile Team</span></div>
+  <style>@keyframes qBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }</style>
+  <div style="margin-top:1rem;color:var(--text-muted);font-size:0.85rem;"><strong style="color:var(--text);">Nico Izraelski</strong><br /><span style="color:var(--accent-light);font-weight:600;">Commander Team</span></div>
 </div></div>
 
 </div>
