@@ -194,7 +194,7 @@ We haven't tried most of these tools — deadlines pushed us to build our own. B
 
 SLIDE 16 — "The starting point" (Case Study)
 ----------------------------------------------
-"Now I want to tell you how we applied SDD on Commander Mobile.
+"Now I want to tell you how we applied SDD on the Commander rewrite.
 
 The context: we're rebuilding Commander — the app barbers use every day to run their business. The starting point was tough.
 

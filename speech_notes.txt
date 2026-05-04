@@ -194,7 +194,7 @@ No probamos la mayoria de estas herramientas — los deadlines nos empujaron a c
 
 SLIDE 16 — "The starting point" (Case Study)
 ----------------------------------------------
-"Ahora les quiero contar como aplicamos SDD en Commander Mobile.
+"Ahora les quiero contar como aplicamos SDD en el rewrite de Commander.
 
 El contexto: estamos reconstruyendo Commander — la app que usan los barbers todos los dias para manejar su negocio. El punto de partida era complicado.
 
