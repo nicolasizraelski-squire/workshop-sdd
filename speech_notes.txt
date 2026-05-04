@@ -14,23 +14,26 @@ SLIDE 2 — Titulo: "Stop prompting. Start specifying."
 -------------------------------------------------------
 [Slide de apertura, dejar visible unos segundos antes de hablar.]
 
-"Bueno, bienvenidos a la Session 4. Hoy vamos a hablar de algo que creo que nos va a cambiar bastante la forma en la que trabajamos con IA en el dia a dia. Y como dice ahi: dejen de promptear, empiecen a especificar. En un rato van a entender que significa eso."
+"Bueno, bienvenidos a la Session 4. Hoy vamos a hablar de algo que creo que nos va a cambiar bastante la forma en la que trabajamos con IA en el dia a dia. Y como dice ahi: dejen de promptear, empiecen a especificar. En un rato van a entender que significa eso.
+
+Quiero arrancar con una analogia, porque aunque esto suena muy tecnico, y le sirva especialmente a los engineers, la sesion le puede servir a cualquiera del equipo".
 
 [~30 segundos]
 
 
 SLIDE 3 — "My mom asked me: I still don't understand what you do at work"
 ---------------------------------------------------------------------------
-"Quiero arrancar con una historia. Hace poco mi mama me pregunto que es lo que hago en el trabajo. Le intente explicar — le dije que trabajo con codigo, que construimos software, que uso inteligencia artificial para ayudarme... y me miro y me dijo: 'sigo sin entender'.
+"Hace poco mi mama me pregunto que es lo que hago en el trabajo. Le intente explicar — le dije que trabajo con codigo, que construimos software, que uso inteligencia artificial para ayudarme... y me miro y me dijo: 'sigo sin entender'.
 
-Entonces se me ocurrio una analogia que creo que aplica perfecto para lo que vamos a hablar hoy. Imaginen que son duenios de un taller de costura. Un dia llega un servicio nuevo que les permite tercerizar las reparaciones a alguien que es mas rapido, mas preciso, y que puede manejar mucho mas volumen que ustedes. Suena genial, no? El tema es que esa persona no conoce a sus clientes, no conoce su negocio, no sabe que estilo prefieren sus clientes habituales, ni cuales son los materiales que ustedes prefieren usar. Ejecuta perfecto... pero no sabe que ejecutar."
+Y de repente me encontre explicandole Spec driven development a ella. Mi mama tiene una merceria, vende articulos relacionados con la costura, confección de ropa, y arreglan ropa. 
+Entonces le dije: Imaginate que un dia llega un servicio nuevo que te permite tercerizar las reparaciones a alguien que es mas rapido, mas preciso, y que puede manejar mucho mas volumen que ustedes. Suena genial, no? El tema es que esa persona no conoce a sus clientes, no conoce su negocio, no sabe que estilo prefieren sus clientes habituales, ni cuales son los materiales que ustedes prefieren usar. Ejecuta perfecto... pero no sabe que ejecutar."
 
 [~2 minutos]
 
 
 SLIDE 4 — "Two questions"
 ---------------------------
-"Entonces la pregunta es: que hacen ustedes como duenios de ese taller? Tienen dos opciones.
+"Entonces la pregunta es: que que vas a hacer como dueña de ese taller? tenes dos opciones.
 
 La primera: revisar cada puntada que hace esa persona. Sentarse al lado, mirar cada costura, corregir cada detalle. Sabiendo que su ejecucion casi siempre va a ser mejor que la de ustedes. Eso no escala, no?
 
@@ -47,7 +50,7 @@ SLIDE 5 — "Models are great at generating code..."
 
 Tienen una ventana de contexto limitada — no pueden ver tu sistema entero. Trabajan con fragmentos sin entender la arquitectura general. Generan codigo correcto en aislamiento, pero no conocen las reglas de negocio ni las restricciones del producto real. Y no saben de tus integraciones internas, tus APIs legacy, ni de las decisiones de diseno que solo maneja el equipo.
 
-O sea, volviendo a la analogia: ejecutan perfecto, pero no saben que ejecutar. Entonces, como cerramos ese gap?"
+O sea, volviendo a la analogia: ejecutan perfecto, pero no saben que ejecutar. Entonces, como cerramos ese gap? SDD es una de las soluciones"
 
 [~1.5 minutos]
 
@@ -67,15 +70,15 @@ SLIDE 7 — "The SDD mindset shift"
 -----------------------------------
 "Esta slide muestra la evolucion de como trabajamos con IA. Hay un espectro.
 
-En el extremo izquierdo esta el modo 'revisar cada linea'. La IA genera codigo y vos te sentas a leer cada linea que escribio. No escala. Es como supervisar cada puntada del costurero.
+En el extremo izquierdo esta el modo 'revisar cada línea'. La IA genera codigo y vos te sentas a leer cada linea que escribio. No escala. Es como supervisar cada puntada del costurero.
 
 Despues viene el modo iteracion: prompteas, ves el output, ajustas, re-prompteas. Te vas acercando, pero perdiste 4 o 5 rondas hasta llegar a algo aceptable.
 
-Despues estan los mejores prompts. Escribis prompts mas detallados, con mas contexto. Mejora bastante, pero el problema es que los prompts son efimeros. Si maniana abris una sesion nueva, ese prompt se perdio.
+Despues estan los mejores prompts. Escribis prompts mas detallados, con mas contexto. Mejora bastante. Tu prompt es como una especificacion de las que vamos a hacer nosotros, pero el problema es que los prompts son efimeros. Si maniana abris una sesion nueva, ese prompt se perdio.
 
 Y en el extremo derecho esta SDD. Escribis specs que persisten, que se pueden versionar en Git, que se pueden compartir con todo el equipo. El trabajo de la IA se vuelve obvio — no tiene que adivinar nada.
 
-Lo que quiero que vean aca es que no se trata de escribir mejores prompts. Se trata de cambiar fundamentalmente donde invertis tu tiempo. El input determina el output."
+Lo que quiero que vean aca es que no se trata de escribir mejores prompts. Se trata de cambiar fundamentalmente donde invertis tu tiempo. El input determina el output, por lo tanto no tenemos que tener miedo de estar dias sin escribir una sola linea de codigo, si estamos generando las specs correspondientes"
 
 [~2.5 minutos]
 
@@ -84,7 +87,7 @@ SLIDE 8 — "The difference in practice"
 ----------------------------------------
 "Veamos la diferencia en la practica con un ejemplo concreto.
 
-A la izquierda tienen el approach ad-hoc. Alguien dice 'Build me a login page'. La IA arranca a codear de una. No considera edge cases — que pasa si el usuario pone mal la password 5 veces? No hay alineacion con diseno — usa cualquier layout. Los prompts se pierden entre sesiones — si maniana retomas el trabajo, arrancas de cero. Y el rework es constante.
+A la izquierda tienen el approach ad-hoc. Alguien dice 'Build me a login page'. La IA arranca a codear de una. No considera edge cases — que pasa si el usuario pone mal la password 5 veces? No hay alineacion con diseno — usa cualquier layout. Luego de la primer iteración vemos que en realidad no necesitabamos un register, y quemamos tokens borrandolo y haciendolo devuelta. Los prompts se pierden entre sesiones — si maniana retomas el trabajo, arrancas de cero. Y el rework es constante.
 
 A la derecha, con SDD. Escribis una spec detallada: flujos de usuario, endpoints, edge cases, permisos. La IA implementa desde esa spec. Las decisiones las toma un humano upfront. Diseno, API contracts, permisos, todo definido antes de la primera linea. Las specs viven en version control. Y el primer pass es casi siempre correcto.
 
@@ -101,7 +104,11 @@ A la izquierda ven lo que siempre deberia incluir. Flujos de usuario — paso po
 
 A la derecha, las cosas que incluimos segun el caso. Matriz de permisos por rol, diagramas de estado, cambios al data model, notas de migracion, y gotchas conocidos del codebase.
 
-La spec vive en version control. Cualquiera del equipo puede leerla y referenciarla — no solo ingenieros."
+La spec vive en version control. Cualquiera del equipo puede leerla y referenciarla — no solo ingenieros.
+
+Es importante aclarar tambien, que no hay un solo tipo de spec, o un set de contenidos que deben existir si o si. Eso va a depender mucho de lo que esten construyendo. No tengan miedo explicarle a un modelo que es lo que quieren construir, y apalancarse en él para armar el spec.
+
+De a poco van a ir encontrando qué es lo que les sirve incluir para sus casos de uso y podran quien dice crear un skill que ya pregunte por esas cosas expecificamente y arme el spec."
 
 [~2.5 minutos]
 
@@ -168,39 +175,35 @@ La regla general: si vas a pasar mas de un dia implementando algo, inverti unas 
 
 SLIDE 14 — "This is a movement, not just our idea"
 ---------------------------------------------------
-"SDD se esta adoptando en toda la industria.
+"Esto es un movimiento, se está adoptando en toda la industria.
 
-GitHub lanzo Spec Kit — un toolkit open-source con un workflow de 7 pasos. Si GitHub lo construyo, el concepto tiene peso.
+GitHub lanzo Spec Kit — un toolkit open-source con un workflow de 7 pasos. Escuche que para algunos use cases agrega mas burocracia de la necesaria, pero ahí está.
 
-GSD tiene mas de 12 mil stars. Es el framework de SDD mas popular para Claude Code. Usa fases: discuss, plan, execute, verify, ship.
+GSD tiene mas de 12 mil stars, Recuerdo que arthur tambien refirio a este repositorio. Es el framework de SDD mas popular para Claude Code. Usa fases: discuss, plan, execute, verify, ship. Creo que vale la pena probarlo.
 
 Y Superpowers es un plugin de Claude que enforcea planning, TDD, y code review. Mas opinionado, pero para equipos que quieren estructura rigida funciona bien.
 
-Hay opciones para cada estilo de trabajo. Los links estan ahi si quieren explorarlos."
+Hay opciones para cada estilo de trabajo. Los links estan ahi si quieren explorarlos. Pero la idea es que cada equipo pueda adaptar las herramientas para que matcheen mejor con su flujo."
 
 [~1.5 minutos]
 
 
 SLIDE 15 — "Who's talking about SDD?"
 --------------------------------------
-"Y hay gente muy influyente hablando de esto.
+"Y hay gente muy influyente hablando de esto. Les voy a dejar los links en la presentacion, que despues les voy a compartir.
 
-Martin Fowler escribio sobre Kiro, spec-kit, y Tessl como patron emergente clave. Thoughtworks lo listo en su technology radar. Y Addy Osmani de Google lo tiene como parte central de su workflow con LLMs para 2026.
-
-No probamos la mayoria de estas herramientas — los deadlines nos empujaron a construir algo propio. Pero son opciones solidas. Si alguno probo alguna, me interesa escuchar."
+La realidad es que estas herramientas estan apareciendo cada vez más y se dificulta probar todas, pero si alguien tiene experiencia con alguna, estaría bueno que después nos cuenten así podemos mejorar nuestro framework juntos."
 
 [~1 minuto]
 
 
 SLIDE 16 — "The starting point" (Case Study)
 ----------------------------------------------
-"Ahora les quiero contar como aplicamos SDD en el rewrite de Commander.
+"Asi que bueno, Ahora les quiero contar como aplicamos SDD en el rewrite de Commander. Asi tambien se llevan un caso real de aplicacion.
 
-El contexto: estamos reconstruyendo Commander — la app que usan los barbers todos los dias para manejar su negocio. El punto de partida era complicado.
+El contexto: estamos reconstruyendo Commander y teniamos dos codebases legacy con anios de features apilados. Cero documentacion. Las business rules, los permisos, los edge cases — todo enterrado en el codigo. No había un lugar para buscar lo que necesitabamos. Engineering sabia como funcionaba el codigo, Product sabia la intencion del negocio, QA sabia que cosas se rompian. Pero era muy dificil juntar el panorama completo. Sumado a que quitaba mucho tiempo estar preguntando por todo a producto.
 
-Teniamos dos codebases legacy con anios de features apilados. Cero documentacion. Las business rules, los permisos, los edge cases — todo enterrado en el codigo. Y lo peor: la informacion estaba en silos. Engineering sabia como funcionaba el codigo, Product sabia la intencion del negocio, QA sabia que cosas se rompian. Pero era muy dificil juntar el panorama completo.
-
-Y al principio, la IA lo empeoro. Intentamos promptear a Claude para reconstruir features, pero sin documentacion, alucinaba business rules y se perdia edge cases constantemente. Generaba codigo que compilaba pero no hacia lo que tenia que hacer."
+Y al principio, Intentamos promptear a Claude para reconstruir features, pero sin documentacion, alucinaba business rules y se perdia edge cases constantemente. Generaba codigo que compilaba pero no hacia lo que tenia que hacer. O no tan bien como esperabamos."
 
 [~2.5 minutos]
 
@@ -211,17 +214,17 @@ SLIDE 17 — "How we applied SDD" (Case Study)
 
 Primero: usamos Claude como herramienta de arqueologia. Lo apuntamos a los codebases existentes y le pedimos que documentara lo que encontrara — flujos, reglas de negocio, permisos, edge cases. No le pedimos que construyera nada. Solo que leyera y documentara.
 
-Segundo: tomamos esos specs extraidos, los refinamos con los nuevos requerimientos de Product, definimos los nuevos flujos, y los linkeamos directamente a los frames de Figma. Mantuvimos las reglas de negocio, los endpoints, los contratos con la API y demas — solo que utilizando nuestros nuevos requerimientos, disenos y flujos. Cada spec se convirtio en el single source of truth del feature.
+Segundo: tomamos esos specs extraidos, los refinamos con los nuevos requerimientos de Producto y diseño, definimos los nuevos flujos, y los linkeamos directamente a los frames de Figma. Mantuvimos las reglas de negocio, los endpoints, los contratos con la API y demas — solo que utilizando nuestros nuevos requerimientos, disenos y flujos. Cada spec se convirtio en el single source of truth del feature.
 
 Y tercero: generamos planes de implementacion que dividian cada feature en fases chicas y testeables. Implementamos una fase a la vez, verificamos que funcionara, y despues pasamos a la siguiente.
 
-O sea, pasamos de gastar mucho tiempo iterando y volviendo sobre lo mismo, a gastar ese tiempo pensando bien las especificaciones, pensando en las preguntas que iban surgiendo para poder definirlas bien. El tiempo no desaparecio — cambio de lugar.
+O sea, pasamos de gastar mucho tiempo iterando y volviendo sobre lo mismo, a gastar ese tiempo pensando bien las especificaciones, pensando en las preguntas que iban surgiendo para poder definirlas bien. Eso hizo que reduzcamos mucho el tiempo por feature,
 
-Y quiero dejar claro: este workflow aplica a cualquier equipo que construya features con IA. Quizas en su caso el paso uno no existe — no tienen legacy code del que extraer specs. Capaz su punto de partida es un PRD que les paso Product, un tech design doc, un Jira epic con acceptance criteria. Perfecto — eso ya es un spec inicial. Lo agarran, lo refinan, lo completan con lo que falte, y lo pasan por el mismo flujo: spec, plan, implementar por fases.
+Y quiero dejar claro: este workflow aplica a cualquier equipo que construya features con IA. Quizas en su caso el paso uno no existe — no tienen legacy code del que extraer specs. Capaz su punto de partida es un PRD que les paso Product, un Jira epic con acceptance criteria. Perfecto — eso ya es un spec inicial. Lo agarran, lo refinan, lo completan con lo que falte, y lo pasan por el mismo flujo: spec, plan, implementar por fases.
 
-Y una vez que estan implementando, el ciclo es: implementas una fase, validas lo que hizo, y si algo no esta bien, corregis la spec primero y despues el codigo. Siempre la spec es la fuente de verdad — no arreglas el codigo directamente y dejas la spec desactualizada. No es que le das la spec a Claude y te vas a tomar un cafe. Vos seguis ahi, pero en vez de estar escribiendo codigo estas validando y refinando. Es un rol diferente — y mucho mas efectivo.
+Lo que cambia es el punto de partida, no el proceso.
 
-Lo que cambia es el punto de partida, no el proceso."
+Y una vez que estan implementando, el ciclo es: implementas una fase, validas lo que hizo, y si algo no esta bien, corregis la spec primero y despues el codigo. Siempre la spec es la fuente de verdad — no arreglas el codigo directamente y dejas la spec desactualizada. No es que le das la spec a Claude y te vas a tomar un cafe. Vos seguis ahi, pero en vez de estar escribiendo codigo estas validando y refinando. Es un rol diferente — y mucho mas efectivo."
 
 [~3.5 minutos]
 
@@ -232,16 +235,15 @@ SLIDE 18 — "The results" (Case Study)
 
 El ciclo de un PR — desde que se abre hasta que se mergea — lo estamos reduciendo en cuatro veces, de 20 horas a 5. Los PRs estan mergeando mas rapido porque el scope esta claro desde el principio, el reviewer puede entender que es lo que hay que cambiar, y ademas ya esta todo testeado y considerado desde un principio — edge cases, user types, permisos.
 
-Y para ponerlo en un ejemplo concreto: antes de SDD, shippear el flujo de client membership nos llevo 42 dias. Despues de SDD, shippeamos product support en checkout — un feature mas grande — en 10 dias. Mismo equipo, mismo codebase. La cuarta parte del tiempo.
+Y para ponerlo en un ejemplo concreto: antes de SDD, shippear el flujo de client membership completo nos llevo 42 dias. Despues de SDD, shippeamos product support en checkout — un feature con mas LOC — en 10 dias. La cuarta parte del tiempo. Obvio que las features son diferentes y no es directamente comprable, pero se vio una clara tendencia a reducir los itmepos
 
 Shippeamos roughly el doble de features en las 8 semanas despues de SDD comparado con las 8 semanas de antes — 52 tickets de Jira pasaron a 101. Y si, el equipo crecio en ese periodo — pero tener un framework tan detallado nos ayuda a que los nuevos se puedan integrar al ciclo de desarrollo rapido y no estar frenados.
 
-Y pasamos de tener cero specs en el repo a 49 en version control.
+Por otro lado, y no menos importante, pasamos de tener cero specs en el repo a 49 en version control.
 
-Y para el que quiera implementar esto en su equipo, tenemos todo el framework documentado — ahi van a encontrar el paso a paso, las skills, los templates, todo el flujo armado. El link esta en la slide."
+Y para el que quiera implementar esto en su equipo, tenemos todo el framework documentado — ahi van a encontrar el paso a paso, las skills, los templates, todo el flujo armado. El link está en la slide."
 
-[Si alguien cuestiona el ~2x en Q&A: "Fair point — el equipo crecio en 4 engineers. Pero el rate por developer tambien subio un 24%, asi que no es solo headcount. Y lo mas importante es que los nuevos shippearon rapido porque tenian specs de donde trabajar. Sin SDD, onboardear 4 personas en dos meses usualmente te frena."]
-[Si cuestionan los tickets: "Los 101 incluyen bugs y chores, pero lo mismo aplica a los 52 del before. Apples to apples. Si filtras solo por PRs con prefijo feat:, el ratio es similar."]
+POR SI LLEGAN A PREGUNTAR: El rate por developer tambien subio un 24%, asi que no es solo headcount. Y lo mas importante es que los nuevos shippearon rapido porque tenian specs de donde trabajar. Sin SDD, onboardear 4 personas en dos meses usualmente te frena."
 
 [~3 minutos]
 
