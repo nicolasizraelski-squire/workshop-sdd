@@ -2,7 +2,7 @@ SPEECH NOTES (ENGLISH) — Session 4: Specification-Driven Development
 =====================================================================
 Presenter: Nico Izraelski | Commander Team
 Target duration: ~45 minutes (speech ~28 min + demo ~10 min + Q&A ~7 min)
-Total slides: 20 (waiting screen + 19 content slides)
+Total slides: 21 (waiting screen + 20 content slides)
 
 
 SLIDE 1 — Waiting screen (Fun Facts)
@@ -41,7 +41,18 @@ That's Spec-Driven Development. It's about shifting where we put our energy. Ins
 [~2 minutes]
 
 
-SLIDE 5 — "What is Spec-Driven Development?"
+SLIDE 5 — "Models are great at generating code..."
+----------------------------------------------------
+"Because here's the reality: models are incredibly good at generating code. They write code that compiles, that runs, that even has tests. But that's not the same as building a good software product.
+
+They have a limited context window — they can't see your entire system. They work with fragments without understanding the overall architecture. They generate correct code in isolation, but they don't know the business rules and constraints of the real product. And they don't know about your internal integrations, your legacy APIs, or the design decisions that only the dev team handles.
+
+So going back to the analogy: they execute perfectly, but they don't know what to execute. So how do we close that gap?"
+
+[~1.5 minutes]
+
+
+SLIDE 6 — "What is Spec-Driven Development?"
 ----------------------------------------------
 "So what is SDD, formally? It's a workflow where we invest in detailed specifications before any code gets written. The AI implements from the spec, not from vague prompts.
 
@@ -52,7 +63,7 @@ SDD proposes something different. The core idea is that specifications are durab
 [~2 minutes]
 
 
-SLIDE 6 — "The SDD mindset shift"
+SLIDE 7 — "The SDD mindset shift"
 -----------------------------------
 "This slide shows the evolution of how we work with AI. There's a spectrum.
 
@@ -69,7 +80,7 @@ What I want you to see here is that it's not about writing better prompts. It's 
 [~2.5 minutes]
 
 
-SLIDE 7 — "The difference in practice"
+SLIDE 8 — "The difference in practice"
 ----------------------------------------
 "Let's look at the difference in practice with a concrete example.
 
@@ -82,7 +93,7 @@ The difference is huge. And it's not just productivity — it's quality and cons
 [~2 minutes]
 
 
-SLIDE 8 — "What goes into a spec?"
+SLIDE 9 — "What goes into a spec?"
 -------------------------------------
 "But what does a spec actually contain? Because a spec is not a long prompt. It's a structured document that captures decisions.
 
@@ -95,7 +106,7 @@ The spec lives in version control. Anyone on the team can read it and reference 
 [~2.5 minutes]
 
 
-SLIDE 9 — "From spec to plan"
+SLIDE 10 — "From spec to plan"
 -------------------------------
 "OK, we have the spec. But the spec alone isn't enough. We need a plan.
 
@@ -108,7 +119,7 @@ Without a plan, even an excellent spec leads to a messy implementation. The plan
 [~2.5 minutes]
 
 
-SLIDE 10 — "Key principles"
+SLIDE 11 — "Key principles"
 -----------------------------
 "There are four principles that make SDD work in practice. They're universal — they apply to any team, any codebase.
 
@@ -125,7 +136,7 @@ When you do this well, the spec mirrors the code — readable by anyone on the t
 [~2.5 minutes]
 
 
-SLIDE 11 — "Who benefits from SDD?"
+SLIDE 12 — "Who benefits from SDD?"
 --------------------------------------
 "SDD isn't just an engineering practice. It benefits the entire team.
 
@@ -142,7 +153,7 @@ SDD creates a shared source of truth that everyone can reference."
 [~2 minutes]
 
 
-SLIDE 12 — "When should you use SDD?"
+SLIDE 13 — "When should you use SDD?"
 --------------------------------------
 "SDD isn't for everything. We don't want to add unnecessary bureaucracy.
 
@@ -155,7 +166,7 @@ The rule of thumb: if you're going to spend more than a day implementing somethi
 [~1.5 minutes]
 
 
-SLIDE 13 — "This is a movement, not just our idea"
+SLIDE 14 — "This is a movement, not just our idea"
 ---------------------------------------------------
 "SDD is being adopted across the industry.
 
@@ -170,7 +181,7 @@ There are options for every work style. The links are right there if you want to
 [~1.5 minutes]
 
 
-SLIDE 14 — "Who's talking about SDD?"
+SLIDE 15 — "Who's talking about SDD?"
 --------------------------------------
 "And there are very influential people talking about this.
 
@@ -181,7 +192,7 @@ We haven't tried most of these tools — deadlines pushed us to build our own. B
 [~1 minute]
 
 
-SLIDE 15 — "The starting point" (Case Study)
+SLIDE 16 — "The starting point" (Case Study)
 ----------------------------------------------
 "Now I want to tell you how we applied SDD on Commander Mobile.
 
@@ -194,7 +205,7 @@ And early on, AI made it worse. We tried prompting Claude to rebuild features, b
 [~2.5 minutes]
 
 
-SLIDE 16 — "How we applied SDD" (Case Study)
+SLIDE 17 — "How we applied SDD" (Case Study)
 ----------------------------------------------
 "So we changed our approach.
 
@@ -206,12 +217,16 @@ And third: we generated implementation plans that broke each feature into small,
 
 Basically, we went from spending a lot of time iterating and going back over the same ground, to spending that time thinking through the specs well, working through the questions as they came up to get them right. The time didn't disappear — it shifted.
 
-And I want to be clear: this workflow applies to any team building features with AI. Maybe in your case step one doesn't exist — you don't have legacy code to extract specs from, and you start directly defining the spec from scratch with your requirements. But the flow is the same: spec, plan, implement in phases. What changes is the starting point, not the process."
+And I want to be clear: this workflow applies to any team building features with AI. Maybe in your case step one doesn't exist — you don't have legacy code to extract specs from. Maybe your starting point is a PRD that Product handed you, a tech design doc, a Jira epic with acceptance criteria. That's great — that's already an initial spec. You take it, refine it, fill in what's missing, and run it through the same flow: spec, plan, implement in phases.
 
-[~3 minutes]
+And once you're implementing, the cycle is: you implement a phase, validate what it did, and if something's off, you fix the spec first and then the code. The spec is always the source of truth — you don't just patch the code and leave the spec out of date. It's not like you hand the spec to Claude and go grab a coffee. You're still there, but instead of writing code you're validating and refining. It's a different role — and a much more effective one.
+
+What changes is the starting point, not the process."
+
+[~3.5 minutes]
 
 
-SLIDE 17 — "The results" (Case Study)
+SLIDE 18 — "The results" (Case Study)
 ---------------------------------------
 "These are some of the results.
 
@@ -229,7 +244,7 @@ And for anyone who wants to implement this on their team, we have the entire fra
 [~3 minutes]
 
 
-SLIDE 18 — "Meet /build-spec"
+SLIDE 19 — "Meet /build-spec"
 -------------------------------
 "Now, for this workshop I wanted you to walk away with something you can actually use today. So I built /build-spec — a skill that's already up on our marketplace, you can download it and start using it right away.
 
@@ -240,7 +255,7 @@ Without the skill: you tell it 'build me a homepage' and Claude starts coding wi
 [~2 minutes]
 
 
-SLIDE 19 — "/build-spec in action"
+SLIDE 20 — "/build-spec in action"
 ------------------------------------
 "Here we can see the skill in the terminal. First it scans your project — detects the stack, finds existing components, understands how the code is organized. Then it starts asking you meaningful questions — not generic ones, but concrete things about what you want to build, how you want to build it, what permissions apply, how it should behave in different scenarios. They're questions that make sense because it already read your codebase. And at the end it generates two files: the spec, which includes flows, edge cases, and acceptance criteria; and the plan, which breaks the work into phases with dependencies and risks.
 
@@ -260,7 +275,7 @@ The skill is available now, you can go download it. You install it with /plugin 
   7. Highlight how it references existing components from the project]
 
 
-SLIDE 20 — Closing: "It's about thinking, not prompting"
+SLIDE 21 — Closing: "It's about thinking, not prompting"
 ----------------------------------------------------------
 "To close: this is about thinking, not prompting.
 
@@ -276,14 +291,15 @@ ESTIMATED TIME BREAKDOWN
 ============================================================
 Slide 2 (Title):                  ~0.5 min
 Slides 3-4 (Analogy):             ~4 min
-Slides 5-7 (SDD Concept):         ~6.5 min
-Slides 8-10 (Spec, Plan, Pples):  ~7.5 min
-Slides 11-12 (Benefits + When):   ~3.5 min
-Slides 13-14 (Ecosystem):         ~2.5 min
-Slides 15-17 (Case Study):        ~7 min
-Slides 18-19 (Demo):              ~2 min speech + ~8-10 min demo
-Slide 20 (Closing):               ~1 min
+Slide 5 (The Reality):            ~1.5 min
+Slides 6-8 (SDD Concept):         ~6.5 min
+Slides 9-11 (Spec, Plan, Pples):  ~7.5 min
+Slides 12-13 (Benefits + When):   ~3.5 min
+Slides 14-15 (Ecosystem):         ~2.5 min
+Slides 16-18 (Case Study):        ~9 min
+Slides 19-20 (Build-spec):        ~4 min
+Slide 21 (Closing):               ~1 min
 Q&A:                               ~5-7 min
 --------------------------------------------
-ESTIMATED TOTAL:                   ~43-48 min
+ESTIMATED TOTAL:                   ~45-48 min
 ============================================================
