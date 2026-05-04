@@ -451,6 +451,10 @@
       <div class="tooltip">Median time from PR opened to merged on <strong>develop</strong>. Before SDD (Jan 6 &ndash; Mar 3, 2026): 141 PRs, 20.0h median. After SDD (Mar 4 &ndash; Apr 30, 2026): 241 PRs, 5.3h median. Source: <code>gh pr list --state merged --base develop --json createdAt,mergedAt</code></div>
     </div>
     <div class="st">
+      <div class="n">42d &#8594; 10d</div><div class="l">single feature delivery<br/>(real example)</div>
+      <div class="tooltip">Time from first PR opened to last PR merged for a single Jira ticket. Before SDD: SQR-2774 (Client membership details + invoices) &mdash; 42.1 days, 4 PRs, 4,855 LOC. After SDD: SQR-8277 (Product support in checkout) &mdash; 10.0 days, 7 PRs, 11,850 LOC. Bigger feature, &frac14; the time. Source: <code>gh pr list --json title,createdAt,mergedAt</code></div>
+    </div>
+    <div class="st">
       <div class="n">~2&times;</div><div class="l">features shipped<br/>per 8-week window</div>
       <div class="tooltip">Distinct Jira tickets (SQR-XXXX) in PR titles/branch names merged to <strong>develop</strong>. Before SDD (Jan 6 &ndash; Mar 3, 2026): 52 tickets across 141 PRs from 7 authors. After SDD (Mar 4 &ndash; Apr 30, 2026): 101 tickets across 241 PRs from 11 authors. Team grew by 4 engineers; per-developer throughput grew ~24%. Source: <code>gh pr list --state merged --base develop --json title,headRefName</code></div>
     </div>

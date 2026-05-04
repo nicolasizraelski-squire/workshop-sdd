@@ -232,6 +232,8 @@ SLIDE 18 — "The results" (Case Study)
 
 The PR cycle — from open to merged — we're cutting it by four times, from 20 hours down to 5. PRs are merging faster because the scope is clear from the start, the reviewer can understand what needs to change, and everything's been tested and considered upfront — edge cases, user types, permissions.
 
+And to put it in a concrete example: before SDD, shipping the client membership flow took us 42 days. After SDD, we shipped full product support in checkout — a bigger feature — in 10 days. Same team, same codebase. A quarter of the time.
+
 We shipped roughly twice as many features in the 8 weeks after SDD compared to the 8 weeks before — 52 Jira tickets went to 101. And yes, the team grew during that period — but having such a detailed framework helps new hires get into the development cycle quickly instead of being stuck.
 
 And we went from zero specs in the repo to 49 in version control.

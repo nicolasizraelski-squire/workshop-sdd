@@ -232,6 +232,8 @@ SLIDE 18 — "The results" (Case Study)
 
 El ciclo de un PR — desde que se abre hasta que se mergea — lo estamos reduciendo en cuatro veces, de 20 horas a 5. Los PRs estan mergeando mas rapido porque el scope esta claro desde el principio, el reviewer puede entender que es lo que hay que cambiar, y ademas ya esta todo testeado y considerado desde un principio — edge cases, user types, permisos.
 
+Y para ponerlo en un ejemplo concreto: antes de SDD, shippear el flujo de client membership nos llevo 42 dias. Despues de SDD, shippeamos product support en checkout — un feature mas grande — en 10 dias. Mismo equipo, mismo codebase. La cuarta parte del tiempo.
+
 Shippeamos roughly el doble de features en las 8 semanas despues de SDD comparado con las 8 semanas de antes — 52 tickets de Jira pasaron a 101. Y si, el equipo crecio en ese periodo — pero tener un framework tan detallado nos ayuda a que los nuevos se puedan integrar al ciclo de desarrollo rapido y no estar frenados.
 
 Y pasamos de tener cero specs en el repo a 49 en version control.
