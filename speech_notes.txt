@@ -115,15 +115,13 @@ Sin un plan, incluso una spec excelente lleva a una implementacion desorganizada
 
 SLIDE 10 — "Key principles"
 -----------------------------
-"Hay cuatro principios que hacen que SDD funcione en la practica. Son universales — aplican para cualquier equipo, cualquier codebase.
+"Hay tres principios que hacen que SDD funcione en la practica. Son universales — aplican para cualquier equipo, cualquier codebase.
 
 Primero: un ticket, una spec. Cada flujo independientemente demostrable tiene una especificacion y un ticket. Si un ticket necesita dos specs, deberian ser dos tickets. Esto elimina ambiguedad sobre el scope.
 
 Segundo: reuse first. Siempre buscar en el codebase antes de crear algo nuevo. Esto es critico con IA — la IA tiende a crear cosas nuevas por default. Si no le decis explicitamente 'busca primero si ya existe', va a inventar un componente nuevo cada vez.
 
-Tercero: respetar el diseno. Los disenos no son sugerencias. Copy exacto, spacing, colores, interacciones — la spec referencia los frames de Figma directamente.
-
-Y cuarto: documentar gotchas. Despues de cada fase, registrar lo que descubrimos para que el proximo que toque el feature no redescubra los mismos problemas.
+Y tercero: documentar gotchas. Despues de cada fase, registrar lo que descubrimos para que el proximo que toque el feature no redescubra los mismos problemas.
 
 Cuando se aplica bien, la spec es un reflejo del codigo — readable por cualquiera del equipo."
 

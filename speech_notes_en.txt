@@ -114,15 +114,13 @@ Without a plan, even an excellent spec leads to a messy implementation. The plan
 
 SLIDE 10 — "Key principles"
 -----------------------------
-"There are four principles that make SDD work in practice. They're universal — they apply to any team, any codebase.
+"There are three principles that make SDD work in practice. They're universal — they apply to any team, any codebase.
 
 First: one ticket, one spec. Each independently demonstrable flow gets one spec and one ticket. If a ticket needs two specs, it should be two tickets. This eliminates scope ambiguity.
 
 Second: reuse first. Always search the codebase before creating something new. This is critical with AI — AI tends to create new things by default. If you don't explicitly tell it 'check if this already exists first,' it'll invent a new component every time.
 
-Third: respect the design. Designs aren't suggestions. Exact copy, spacing, colors, interactions — the spec references Figma frames directly.
-
-And fourth: document gotchas. After each phase, record what you discovered so the next person who touches the feature doesn't rediscover the same problems.
+And third: document gotchas. After each phase, record what you discovered so the next person who touches the feature doesn't rediscover the same problems.
 
 When you do this well, the spec mirrors the code — readable by anyone on the team."
 
