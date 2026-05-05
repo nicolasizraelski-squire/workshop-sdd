@@ -2,7 +2,7 @@ SPEECH NOTES — Session 4: Specification-Driven Development
 ============================================================
 Presenter: Nico Izraelski | Commander Team
 Duracion objetivo: ~45 minutos (speech ~28 min + demo ~10 min + Q&A ~7 min)
-Total slides: 21 (pantalla espera + 20 slides de contenido)
+Total slides: 20 (pantalla espera + 19 slides de contenido)
 
 
 SLIDE 1 — Pantalla de espera (Fun Facts)
@@ -83,20 +83,7 @@ Lo que quiero que vean aca es que no se trata de escribir mejores prompts. Se tr
 [~2.5 minutos]
 
 
-SLIDE 8 — "The difference in practice"
-----------------------------------------
-"Veamos la diferencia en la practica con un ejemplo concreto.
-
-A la izquierda tienen el approach ad-hoc. Alguien dice 'Build me a login page'. La IA arranca a codear de una. No considera edge cases — que pasa si el usuario pone mal la password 5 veces? No hay alineacion con diseno — usa cualquier layout. Luego de la primer iteración vemos que en realidad no necesitabamos un register, y quemamos tokens borrandolo y haciendolo devuelta. Los prompts se pierden entre sesiones — si maniana retomas el trabajo, arrancas de cero. Y el rework es constante.
-
-A la derecha, con SDD. Escribis una spec detallada: flujos de usuario, endpoints, edge cases, permisos. La IA implementa desde esa spec. Las decisiones las toma un humano upfront. Diseno, API contracts, permisos, todo definido antes de la primera linea. Las specs viven en version control. Y el primer pass es casi siempre correcto.
-
-La diferencia es enorme. Y no es solo productividad — es calidad y consistencia."
-
-[~2 minutos]
-
-
-SLIDE 9 — "What goes into a spec?"
+SLIDE 8 — "What goes into a spec?"
 -------------------------------------
 "Pero que tiene una spec concretamente? Porque una spec no es un prompt largo. Es un documento estructurado que captura decisiones.
 
@@ -113,7 +100,7 @@ De a poco van a ir encontrando qué es lo que les sirve incluir para sus casos d
 [~2.5 minutos]
 
 
-SLIDE 10 — "From spec to plan"
+SLIDE 9 — "From spec to plan"
 -------------------------------
 "Ok, ya tenemos la spec. Pero con la spec sola no alcanza. Necesitamos un plan.
 
@@ -126,7 +113,7 @@ Sin un plan, incluso una spec excelente lleva a una implementacion desorganizada
 [~2.5 minutos]
 
 
-SLIDE 11 — "Key principles"
+SLIDE 10 — "Key principles"
 -----------------------------
 "Hay cuatro principios que hacen que SDD funcione en la practica. Son universales — aplican para cualquier equipo, cualquier codebase.
 
@@ -143,7 +130,7 @@ Cuando se aplica bien, la spec es un reflejo del codigo — readable por cualqui
 [~2.5 minutos]
 
 
-SLIDE 12 — "Who benefits from SDD?"
+SLIDE 11 — "Who benefits from SDD?"
 --------------------------------------
 "SDD no es solo una practica de engineering. Beneficia a todo el equipo.
 
@@ -160,7 +147,7 @@ SDD crea un source of truth compartido que todos pueden referenciar."
 [~2 minutos]
 
 
-SLIDE 13 — "When should you use SDD?"
+SLIDE 12 — "When should you use SDD?"
 --------------------------------------
 "SDD no es para todo. No queremos agregar burocracia innecesaria.
 
@@ -173,7 +160,7 @@ La regla general: si vas a pasar mas de un dia implementando algo, inverti unas 
 [~1.5 minutos]
 
 
-SLIDE 14 — "This is a movement, not just our idea"
+SLIDE 13 — "This is a movement, not just our idea"
 ---------------------------------------------------
 "Esto es un movimiento, se está adoptando en toda la industria.
 
@@ -188,7 +175,7 @@ Hay opciones para cada estilo de trabajo. Los links estan ahi si quieren explora
 [~1.5 minutos]
 
 
-SLIDE 15 — "Who's talking about SDD?"
+SLIDE 14 — "Who's talking about SDD?"
 --------------------------------------
 "Y hay gente muy influyente hablando de esto. Les voy a dejar los links en la presentacion, que despues les voy a compartir.
 
@@ -197,7 +184,7 @@ La realidad es que estas herramientas estan apareciendo cada vez más y se dific
 [~1 minuto]
 
 
-SLIDE 16 — "The starting point" (Case Study)
+SLIDE 15 — "The starting point" (Case Study)
 ----------------------------------------------
 "Asi que bueno, Ahora les quiero contar como aplicamos SDD en el rewrite de Commander. Asi tambien se llevan un caso real de aplicacion.
 
@@ -208,7 +195,7 @@ Y al principio, Intentamos promptear a Claude para reconstruir features, pero si
 [~2.5 minutos]
 
 
-SLIDE 17 — "How we applied SDD" (Case Study)
+SLIDE 16 — "How we applied SDD" (Case Study)
 ----------------------------------------------
 "Entonces cambiamos el approach.
 
@@ -229,7 +216,7 @@ Y una vez que estan implementando, el ciclo es: implementas una fase, validas lo
 [~3.5 minutos]
 
 
-SLIDE 18 — "The results" (Case Study)
+SLIDE 17 — "The results" (Case Study)
 ---------------------------------------
 "Estos son algunos de los resultados.
 
@@ -248,7 +235,7 @@ POR SI LLEGAN A PREGUNTAR: El rate por developer tambien subio un 24%, asi que n
 [~3 minutos]
 
 
-SLIDE 19 — "Meet /build-spec"
+SLIDE 18 — "Meet /build-spec"
 -------------------------------
 "Ahora, en este workshop queria que se lleven algo que puedan usar ni bien salgan de aca. Asi que cree /build-spec — un skill que ya esta subido a nuestro marketplace, se lo pueden bajar y empezar a usar hoy.
 
@@ -259,7 +246,7 @@ Sin el skill: le decis 'construime una pagina de inicio' y Claude arranca a code
 [~2 minutos]
 
 
-SLIDE 20 — "/build-spec in action"
+SLIDE 19 — "/build-spec in action"
 ------------------------------------
 "Aca vemos el skill en la terminal. Primero escanea tu proyecto — detecta el stack, encuentra componentes existentes, entiende como esta organizado el codigo. Despues te empieza a hacer preguntas significativas — no preguntas genericas, sino cosas concretas sobre lo que queres construir, como lo queres hacer, que permisos aplican, como deberia comportarse en distintos escenarios. Son preguntas que tienen sentido porque ya leyo tu codebase. Y al final genera dos archivos: la spec, que incluye flujos, edge cases, y criterios de aceptacion; y el plan, que divide el trabajo en fases con dependencias y riesgos.
 
@@ -279,7 +266,7 @@ El skill ya esta disponible, ya se lo pueden bajar. Lo instalas con /plugin inst
   7. Resaltar como referencia componentes existentes del proyecto]
 
 
-SLIDE 21 — Cierre: "It's about thinking, not prompting"
+SLIDE 20 — Cierre: "It's about thinking, not prompting"
 ---------------------------------------------------------
 "Para cerrar: esto se trata de pensar, no de promptear.
 
@@ -296,14 +283,14 @@ RESUMEN DE TIEMPOS ESTIMADOS
 Slide 2 (Titulo):                ~0.5 min
 Slides 3-4 (Analogia):           ~4 min
 Slide 5 (La realidad):           ~1.5 min
-Slides 6-8 (Concepto SDD):       ~6.5 min
-Slides 9-11 (Spec, Plan, Ppios): ~7.5 min
-Slides 12-13 (Beneficios+Cuando):~3.5 min
-Slides 14-15 (Ecosistema):       ~2.5 min
-Slides 16-18 (Case Study):       ~9 min
-Slides 19-20 (Build-spec):       ~4 min
-Slide 21 (Cierre):               ~1 min
+Slides 6-7 (Concepto SDD):       ~4.5 min
+Slides 8-10 (Spec, Plan, Ppios): ~7.5 min
+Slides 11-12 (Beneficios+Cuando):~3.5 min
+Slides 13-14 (Ecosistema):       ~2.5 min
+Slides 15-17 (Case Study):       ~9 min
+Slides 18-19 (Build-spec):       ~4 min
+Slide 20 (Cierre):               ~1 min
 Q&A:                             ~5-7 min
 --------------------------------------------
-TOTAL ESTIMADO:                  ~45-48 min
+TOTAL ESTIMADO:                  ~43-46 min
 ============================================================
