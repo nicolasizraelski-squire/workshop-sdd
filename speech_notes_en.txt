@@ -14,218 +14,152 @@ SLIDE 2 — Title: "Stop prompting. Start specifying."
 ------------------------------------------------------
 [Opening slide — let it sit for a few seconds before speaking.]
 
-"Alright, welcome to Session 4. Today we're going to talk about something I think will really change the way we work with AI day to day. And as it says right there: stop prompting, start specifying. In a few minutes you'll understand what that means.
-
-I want to start with an analogy, because even though this sounds very technical and it's especially useful for engineers, this session can be valuable for anyone on the team."
+"Alright, welcome to session 4. Today we are going to talk about something I think it will really change the way we work with AI on our day to day. So as it says right there, stop prompting and start specifying. Today I want to start with a quick story, because just so you know, this session may sound very technical and it's especially useful for engineers, everyone in the team can find it valuable."
 
 [~30 seconds]
 
 
 SLIDE 3 — "My mom asked me: I still don't understand what you do at work"
 ---------------------------------------------------------------------------
-"A while back my mom asked me what I actually do at work. I tried to explain — I told her I work with code, that we build software, that I use AI to help me... and she looked at me and said: 'I still don't get it.'
-
-And I found myself explaining Spec-Driven Development to her. My mom owns a haberdashery — she sells sewing supplies, clothing materials, and they do alterations. So I told her: imagine one day a new service comes along that lets you outsource your alterations to someone who's faster, more precise, and can handle way more volume than you. Sounds great, right? The catch is that person doesn't know your customers, doesn't know your business, doesn't know what styles your regulars prefer, or which fabrics you like to work with. They execute perfectly... but they don't know what to execute."
+"Just a quick story. The other day I was talking with my mom, and she asked me the typical question: I don't understand what you do at work? So I explained, I work with code, I use AI, I build a software product, etcetera. But she was like, Nah I still don't understand! So all of a sudden I found myself explaining spec driven development to her. She owns a notions store, they sell sewing supplies, clothing materials, and they do clothing repairs. So I told her, imagine you could outsource the repairs to someone who is faster, more precise, and can handle much more volume than you. Sounds great right? The catch is that they don't know your customers, their preferences, or your business. They execute perfectly. But they don't know what to execute."
 
 [~2 minutes]
 
 
 SLIDE 4 — "Two questions"
 ---------------------------
-"So the question is: what do you do as the owner of that shop? You have two options.
-
-The first one: check every stitch they make. Sit next to them, inspect every seam, correct every detail. Knowing that their execution is almost always going to be better than yours. That doesn't scale, right?
-
-The second option: invest your time in writing a clear spec of what you need. Tell them: these pants need this type of stitch, with this thread, the length has to be exactly this, and if you find the fabric is damaged, let me know before you cut. In other words: expected outcomes, edge cases, acceptance criteria.
-
-That's Spec-Driven Development. It's about shifting where we put our energy. Instead of writing code and reviewing output line by line, we invest in thinking through the problem before a single line of code gets written. And that's what we're going to explore today."
+"So you have two options: 1. You can review every stitch they make, sit next to them and correct every detail. Knowing that their execution will be almost always better than yours. 2. Or you can spend that time in writing a clear specification of what you need. Tell them 'these pants needs this type of stitch' or 'the length has to be exactly this one' or 'if the fabric is damaged, ask me before doing anything'. In other words, expected results, edge cases, acceptance criteria. That is Spec driven development, instead of asking the AI to do something and spend time reviewing and fixing line by line, we spend that time thinking through the problem before a single line of code gets written."
 
 [~2 minutes]
 
 
 SLIDE 5 — "Models are great at generating code..."
 ----------------------------------------------------
-"Because here's the reality: models are incredibly good at generating code. They write code that compiles, that runs, that even has tests. But that's not the same as building a good software product.
+"Because this is a reality, models are really good at generating code. They write code that compiles, that has a lot of tests, but that is not the same as building a good software product.
 
-They have a limited context window — they can't see your entire system. They work with fragments without understanding the overall architecture. They generate correct code in isolation, but they don't know the business rules and constraints of the real product. And they don't know about your internal integrations, your legacy APIs, or the design decisions that only the dev team handles.
-
-So going back to the analogy: they execute perfectly, but they don't know what to execute. So how do we close that gap? SDD is one of the solutions."
+Models have a limited context window, they don't know your whole architecture. They generate correct code, but they don't know the business rules and constraints of the real product. So going back to the analogy, they execute perfectly, but they don't know what to execute. The question is how do we close that gap?"
 
 [~1.5 minutes]
 
 
 SLIDE 6 — "What is Spec-Driven Development?"
 ----------------------------------------------
-"So what is SDD, formally? It's a workflow where we invest in detailed specifications before any code gets written. The AI implements from the spec, not from vague prompts.
-
-Think about how most devs work with AI today. They open Claude or Copilot, type 'build me a login page,' and the AI starts generating code immediately. Sometimes it works out, a lot of times it doesn't. And when it doesn't, they start iterating: 'no, add this,' 'change that,' 'I forgot about permissions.' That's ad-hoc prompting.
-
-SDD proposes something different. The core idea is that specifications are durable — they stick around, they get versioned, they get shared. Prompts are ephemeral — they're lost between sessions. Think well first, build with confidence after."
+"Specification driven development is a workflow where we invest most of our time in writing detailed specifications before any code gets written. Think about how most devs work with AI today. They open Cursor, or Claude, type build me a login page, and the AI starts generating code right away. Sometimes it works, most of the time it doesn't. And when it doesn't they start iterating 'No, add this' 'Oh I forgot about this case' 'Change this'. SDD proposes something different. The core idea is that specifications are durable, they stick around, they get versioned and shared. Prompts are ephemeral and get lost between sessions. The idea is to think well first, and build confidently after."
 
 [~2 minutes]
 
 
 SLIDE 7 — "The SDD mindset shift"
 -----------------------------------
-"This slide shows the evolution of how we work with AI. There's a spectrum.
+"Here we can see the evolution of how we work with AI.
 
-On the far left you have the 'review every line' mode. The AI generates code and you sit there reading every line it wrote. Doesn't scale. It's like inspecting every stitch your tailor makes.
+On the far left, we have 'reviewing every line'. It's like reviewing every stitch your tailor makes. It doesn't scale.
 
 Then comes iteration mode: you prompt, see the output, adjust, re-prompt. You get closer, but you've burned four or five rounds just to get to something acceptable.
 
-Then there are better prompts. You write more detailed prompts, with more context. It helps a lot. Your prompt starts looking like the kind of spec we're going to build. But the problem is prompts are ephemeral. If tomorrow you open a new session, that prompt is gone.
-
-And on the far right is SDD. You write specs that persist, that can be versioned in Git, that can be shared with your entire team. The AI's job becomes obvious — it doesn't have to guess anything.
-
-What I want you to see here is that it's not about writing better prompts. It's about fundamentally changing where you invest your time. The input determines the output — so don't be afraid to spend days without writing a single line of code, as long as you're generating the right specs."
+Then there are better prompts. You write more detailed prompts, with more context. I mean, it helps a lot and your prompt starts looking like the kind of spec we're going to build later. But the problem is that prompts are ephemeral. If tomorrow you open a new session, that prompt is gone. And on the far right is SDD. You write specs that persist, that can be versioned in Git, that can be shared with your entire team. This way, the AI's job becomes obvious and it doesn't have to guess anything. What I want you to see here is that this is not about writing better prompts. It's about changing where you are investing your time. The input determines the output, so don't be afraid to spend days without writing a single line of code, if you are writing the right specs."
 
 [~2.5 minutes]
 
 
 SLIDE 8 — "What goes into a spec?"
 -------------------------------------
-"But what does a spec actually contain? Because a spec is not a long prompt. It's a structured document that captures decisions.
+"But what does a spec actually contain? A spec is not a long prompt. It's a structured document that captures decisions. Here I have to make a clarification: There is no single type of spec, that will depend a lot on what you are building. So don't be afraid to tell the model what you want to build, and then, lean on it to help you put the spec together.
 
-On the left you see what should always be included. User flows — step by step, screen by screen. Acceptance criteria — what does 'done' mean for this feature. Edge cases — errors, empty states, what happens when there are no permissions. API contracts — endpoints, payloads, responses. And design references — and when I say reference, I mean the link to the specific Figma frame, the exact copy on each button, the colors in semantic tokens, hover and error states. It's not 'follow the design' — it's 'here's exactly what the design says.'
+However there are some things that are almost always going to be included, for example. 1. User flows, screen by screen. 2. Acceptance criteria, what does Done mean in this feature. 3. All the edge cases. 4. API contracts, the payloads, the responses. 5. If you are building front end, the design references, the link to the Figma designs in our case. In addition you can sometimes add permissions matrix, state diagrams, known gotchas from previous phases.
 
-On the right, things we include depending on the case. Permission matrices by role, state diagrams, data model changes, migration notes, and known gotchas in the codebase.
-
-The spec lives in version control. Anyone on the team can read it and reference it — not just engineers.
-
-It's also important to clarify: there's no single type of spec, or a set of contents that must always be there. That's going to depend a lot on what you're building. Don't be afraid to explain to a model what you want to build and lean on it to help you put the spec together.
-
-Over time you'll figure out what's useful to include for your use cases, and you could even create a skill that already asks for those specific things and builds the spec for you."
+Over time you will figure out what's useful to include for your use cases. And who knows, you can create a skill that asks you those things and creates the spec for you."
 
 [~2.5 minutes]
 
 
 SLIDE 9 — "From spec to plan"
 -------------------------------
-"OK, we have the spec. But the spec alone isn't enough. We need a plan.
+"Ok, we are done with the spec, but the spec alone is not enough. We need a plan. The spec answers WHAT we are building, what should it do, what can go wrong, etcetera. The plan answers HOW we are going to build it, in what order. Which things are already created, how are we going to break the feature into phases.
 
-The spec answers the 'what': what are we building, what should it do, what can go wrong, what does it look like. The plan answers the 'how' and 'in what order': what do we build first, what already exists that we can reuse, what's shared across tickets, and how do we break the work into phases.
+Something really valuable happens at this stage. When the model analyzes the spec to generate the plan, it catches gaps. It can catch things that were left ambiguous, edge cases that weren't covered. So it asks you: 'What should we do in this situation' 'The endpoint response includes pagination, what should we do here'. It's like a second pair of eyes reviewing each spec before a single line of code is written.
 
-And something really valuable happens at this stage: when the model analyzes the spec to generate the plan, it catches gaps. Things that were left ambiguous, decisions that weren't made, edge cases that weren't covered. And it asks you. 'In this flow, what happens if the user doesn't have permissions? The spec doesn't say.' Or 'this endpoint returns paginated results, but the spec doesn't specify how to handle pagination.' It's like a second pair of eyes reviewing the spec before a single line of code gets written.
-
-Without a plan, even an excellent spec leads to a messy implementation. The plan turns the spec into actionable, ordered work — and along the way, it closes the gaps that were left behind."
+With no plan, even an excellent spec leads to a messy implementation. The plan turns the spec into actionable ordered work, and along the way it closes the gaps that were left behind."
 
 [~2.5 minutes]
 
 
 SLIDE 10 — "Key principles"
 -----------------------------
-"There are three principles that make SDD work in practice. They're universal — they apply to any team, any codebase.
+"There are three principles that will help you implement SDD in almost any team and any codebase.
 
-First: one ticket, one spec. Each independently demonstrable flow gets one spec and one ticket. If a ticket needs two specs, it should be two tickets. This eliminates scope ambiguity.
+1. One ticket means one spec: Each demonstrable flow gets one of each, and this way we eliminate scope ambiguity.
+2. Reuse first. Always search the codebase for existing components. We know AI tends to create new things by default. If you don't explicitly tell it 'check if this already exists first,' it'll invent a new component every time.
+3. And third, document gotchas, record what you discovered so the next person who touches the feature doesn't rediscover the same problems.
 
-Second: reuse first. Always search the codebase before creating something new. This is critical with AI — AI tends to create new things by default. If you don't explicitly tell it 'check if this already exists first,' it'll invent a new component every time.
-
-And third: document gotchas. After each phase, record what you discovered so the next person who touches the feature doesn't rediscover the same problems.
-
-When you do this well, the spec mirrors the code — readable by anyone on the team."
+So when you do this well, the spec will mirror the code."
 
 [~2.5 minutes]
 
 
 SLIDE 11 — "Who benefits from SDD?"
 --------------------------------------
-"SDD isn't just an engineering practice. It benefits the entire team.
+"SDD is not just for engineers. It benefits the entire team. Engineers benefits are clear, we can implement from clear requirements, less rework and more confidence. Product gets real documentation, acceptance criteria, edge cases. Not just a ticket title. Product still makes the business decisions, but now those decisions are documented. QA knows exactly what to test and how of every feature.
 
-Engineers implement from clear requirements. Less rework, more confidence.
-
-Product gets real documentation — acceptance criteria, flows, edge cases — not tickets with just a title. And I want to be clear: SDD doesn't replace Product, it amplifies it. Product still makes the business decisions, but now those decisions are documented.
-
-QA knows exactly what to test. And not just at the end — QA participates in spec validation from the beginning, contributing the cases they know tend to break.
-
-And Design gets the peace of mind that fidelity is enforced.
-
-SDD creates a shared source of truth that everyone can reference."
+And design gets the peace of mind that fidelity is enforced."
 
 [~2 minutes]
 
 
 SLIDE 12 — "When should you use SDD?"
 --------------------------------------
-"SDD isn't for everything. We don't want to add unnecessary bureaucracy.
-
-Use it when the feature touches three or more screens, when there are multiple roles or permissions, when there are handoffs between teams, when there are architecture decisions that affect future work, or when the implementation would take more than a day.
-
-Don't use it for isolated bug fixes, styling tweaks, single-file refactors, or quick prototypes.
-
-The rule of thumb: if you're going to spend more than a day implementing something, invest a few hours specifying it first."
+"So SDD is not for everything, we don't want to add unnecessary bureaucracy when is not needed. Use it when you are implementing a feature that touches multiple screens, when there are handoffs between teams, or when there are architectural decisions. Don't use it for isolated bug fixes, styling tweaks, or single file refactors. Use the rule of thumb: if you are going to spend more than a day implementing it, spend a few hours creating the spec first."
 
 [~1.5 minutes]
 
 
 SLIDE 13 — "This is a movement, not just our idea"
 ---------------------------------------------------
-"This is a movement — it's being adopted across the industry.
-
-GitHub launched Spec Kit — an open-source toolkit with a 7-step workflow. I've heard that for some use cases it adds more bureaucracy than needed, but it's out there.
-
-GSD has over 12,000 stars. I remember Arthur also referenced this repo. It's the most popular SDD framework for Claude Code. It uses phases: discuss, plan, execute, verify, ship. I think it's worth trying.
-
-And Superpowers is a Claude plugin that enforces planning, TDD, and code review. More opinionated, but for teams that want rigid structure it works well.
-
-There are options for every work style. The links are right there if you want to explore them. But the idea is that each team can adapt the tools to best match their workflow."
+"This is a whole movement, it's being adopted across the industry. GitHub launched Spec Kit, I've heard that for some use cases it adds more bureaucracy than needed, but you know, it's out there. We also have GSD that I remember Arthur also referenced it on previous sessions. It's the most popular SDD framework for Claude Code so far. And Superpowers is a Claude plugin that enforces planning, TDD, and code review. It's more opinionated, but for teams that want rigid structure it works well. The links are right there if you want to explore them. The idea is that each team can adapt the tools to best match their workflow."
 
 [~1.5 minutes]
 
 
 SLIDE 14 — "Who's talking about SDD?"
 --------------------------------------
-"And there are very influential people talking about this. I'll leave the links in the presentation, which I'll share with you afterwards.
-
-The reality is these tools are popping up more and more and it's hard to try them all, but if anyone has experience with any of them, it'd be great to hear about it so we can improve our framework together."
+"There are very influential people talking about this. I will leave the links to these readings in the presentation, and I will share it later."
 
 [~1 minute]
 
 
 SLIDE 15 — "The starting point" (Case Study)
 ----------------------------------------------
-"So, now I want to tell you how we applied SDD on the Commander rewrite. So you also walk away with a real case study.
+"So, now I want to tell you about how we applied SDD on the Commander rewrite, so you also walk away with a real example. The context is that we are rebuilding Commander and we had to gather information from two different legacy codebases. That means years and years of features stacked one on top of the other.
 
-The context: we're rebuilding Commander and we had two legacy codebases with years of features stacked on top of each other. Zero documentation. Business rules, permissions, edge cases — all buried in the code. There was no single place to look up what we needed. Engineering knew how the code worked, Product knew the business intent, QA knew what things tended to break. But it was really hard to put the full picture together. On top of that, it took a lot of time to keep going back to Product with questions about everything.
+Zero documentation and all the flows, business rules, edge cases were all buried in the code. There was no single place to look up what we needed. Engineers knew the code, product knew the business but it was really hard to put the full picture together.
 
-And early on, we tried prompting Claude to rebuild features, but without documentation it hallucinated business rules and missed edge cases constantly. It generated code that compiled but didn't do what it was supposed to do. Or not as well as we expected."
+Early on, we tried prompting Cursor, and then Claude to rebuild features, but without documentation it hallucinated business rules and missed edge cases constantly, which made us iterate a lot."
 
 [~2.5 minutes]
 
 
 SLIDE 16 — "How we applied SDD" (Case Study)
 ----------------------------------------------
-"So we changed our approach.
+"So we changed our approach. First we used Claude as an archaeology tool. We pointed it at the existing codebases and asked it to document what it found (flows, business rules, edge cases, etc). We didn't ask it to build anything, just read and document.
 
-First: we used Claude as an archaeology tool. We pointed it at the existing codebases and asked it to document what it found — flows, business rules, permissions, edge cases. We didn't ask it to build anything. Just to read and document.
+Second, we took those extracted specs and refined them with our new requirements. We kept the business rules, the endpoints, the API contracts and everything else, but just using our new requirements, design and flows. After that, each spec became the single source of truth for the feature.
 
-Second: we took those extracted specs, refined them with Product and Design's new requirements, defined the new flows, and linked them directly to the Figma frames. We kept the business rules, the endpoints, the API contracts and everything else — just using our new requirements, designs, and flows. Each spec became the single source of truth for the feature.
+And third, we generated the implementation plan that broke each feature into small and testable phases. We'd implement one phase at a time, verify it worked, and then move on to the next one.
 
-And third: we generated implementation plans that broke each feature into small, testable phases. We'd implement one phase at a time, verify it worked, and then move on to the next.
+Basically, we went from spending a lot of time iterating and going back over the same ground, to spending that time thinking through the specs and working through the questions as they came up. That's what allowed us to drastically reduce the time per feature.
 
-Basically, we went from spending a lot of time iterating and going back over the same ground, to spending that time thinking through the specs well, working through the questions as they came up to get them right. That's what allowed us to drastically reduce the time per feature.
+And I want to be clear: this workflow applies to any team building features with AI. Maybe in your case step one doesn't exist. You may not have legacy code to extract specs from. Maybe your starting point is a PRD or a Jira ticket. That's great too. You can take it, refine it, fill in what's missing, and run it through the same flow: spec, plan, implement in phases. What changes is the starting point, not the process.
 
-And I want to be clear: this workflow applies to any team building features with AI. Maybe in your case step one doesn't exist — you don't have legacy code to extract specs from. Maybe your starting point is a PRD that Product handed you, a Jira epic with acceptance criteria. That's great — that's already an initial spec. You take it, refine it, fill in what's missing, and run it through the same flow: spec, plan, implement in phases.
-
-What changes is the starting point, not the process.
-
-And once you're implementing, the cycle is: you implement a phase, validate what it did, and if something's off, you fix the spec first and then the code. The spec is always the source of truth — you don't just patch the code and leave the spec out of date. It's not like you hand the spec to Claude and go grab a coffee. You're still there, but instead of writing code you're validating and refining. It's a different role — and a much more effective one."
+Once you are implementing, the cycle is: you implement a phase, validate what it did, and if something is off, you fix the spec and then the code. The spec should always be updated."
 
 [~3.5 minutes]
 
 
 SLIDE 17 — "The results" (Case Study)
 ---------------------------------------
-"These are some of the results.
+"Here you have some of the results. We are cutting the PR cycle by four times. PRs are merging faster because the scope is clear from the start, and everything has been tested and considered upfront. Edge cases, user permissions, etc. And to put it in a concrete example, before SDD, shipping the complete client membership flow took us 42 days. After SDD, we shipped Product support in checkout, a feature with more lines of code, in just 10 days. Obviously, the features are different and not directly comparable, but we saw a clear tendency toward reducing the delivery times.
 
-The PR cycle — from open to merged — we're cutting it by four times, from 20 hours down to 5. PRs are merging faster because the scope is clear from the start, the reviewer can understand what needs to change, and everything's been tested and considered upfront — edge cases, user types, permissions.
-
-And to put it in a concrete example: before SDD, shipping the complete client membership flow took us 42 days. After SDD, we shipped product support in checkout — a feature with more LOC — in 10 days. A quarter of the time. Obviously the features are different and not directly comparable, but we saw a clear trend toward reducing delivery times.
-
-We shipped roughly twice as many features in the 8 weeks after SDD compared to the 8 weeks before — 52 Jira tickets went to 101. And yes, the team grew during that period — but having such a detailed framework helps new hires get into the development cycle quickly instead of being stuck.
-
-And just as importantly, we went from zero specs in the repo to 49 in version control.
-
-And for anyone who wants to implement this on their team, we have the entire framework documented — you'll find the step-by-step guide, the skills, the templates, the whole workflow laid out. The link is right there on the slide."
+We shipped roughly twice as many features in the 8 weeks after SDD compared to the 8 weeks before. The team also grew in this period, but having a detailed framework also help the new ones to step into the cycle with no problem at all. And last but not least, we went from zero specs in the repo to 49 in version control, and then this lead to Jira tickets fully completed. And for anyone who wants to know more about the framework we are using, you will find the step-by-step guide with the skills, the templates, and the whole workflow we are using across the team in this link."
 
 [IF THEY ASK: The per-developer rate also went up about 24%, so it's not just headcount. The key is that new hires shipped fast because they had specs to work from. Without SDD, onboarding four people in two months usually slows you down.]
 
@@ -234,22 +168,20 @@ And for anyone who wants to implement this on their team, we have the entire fra
 
 SLIDE 18 — "Meet /build-spec"
 -------------------------------
-"Now, for this workshop I wanted you to walk away with something you can actually use today. So I built /build-spec — a skill that's already up on our marketplace, you can download it and start using it right away.
+"Now, for this session I wanted you to walk away with something you can actually use today. So I built build-spec, a skill that is already up on our marketplace, you can start using it right away.
 
-The skill has three phases. First, DISCOVER: it reads your codebase, understands the structure, the patterns, what components already exist. Second, it asks you questions adapted to the domain — if it's backend it asks about endpoints and permissions, if it's frontend it asks about Figma and UI states. And third, it generates a spec and an implementation plan.
-
-Without the skill: you tell it 'build me a homepage' and Claude starts coding with no questions asked. The rework is inevitable — you're going to have to start clarifying things, defining what's mocked and what's not, correcting edge cases it didn't consider. But with /build-spec, the first thing it does is read your project, and then it fires off a battery of questions that actually make sense, that are meaningful about what it needs to know. And only then does it generate documents you can review and refine before a single line of code gets written."
+The skill has three phases. First discover. It reads your codebase, understands the structure, the patterns and the components that already exist. Second, it asks you questions adapted to the domain, so if it is backend it asks about endpoints and permissions, and if it is front end it will ask you about Figma and UI states. And third, it generates the spec and the implementation plan. Without the spec Claude would start coding right away, no question asked. The rework will be inevitable. With the skill, you will have to answer a battery of questions before a single line of code gets written."
 
 [~2 minutes]
 
 
 SLIDE 19 — "/build-spec in action"
 ------------------------------------
-"Here we can see the skill in the terminal. First it scans your project — detects the stack, finds existing components, understands how the code is organized. Then it starts asking you meaningful questions — not generic ones, but concrete things about what you want to build, how you want to build it, what permissions apply, how it should behave in different scenarios. They're questions that make sense because it already read your codebase. And at the end it generates two files: the spec, which includes flows, edge cases, and acceptance criteria; and the plan, which breaks the work into phases with dependencies and risks.
+"Here you can see the skill in action in the terminal. First it scans the project, detects the stack, understands how the code is structured and finds existing components. Then it starts asking you meaningful questions — not generic ones, but concrete things about what you want to build, how you want to build it, what permissions apply, how it should behave in different scenarios, etc. They're questions that make sense because it has already read your codebase. After that you can see that it will build the Spec and plan.
 
-Once you're happy with the spec and the plan, you implement phase by phase. And this is where everything we covered in the previous workshops comes in — agent teams, sub-agents, skills. All of that is what you'll use when you implement from the specs you generate. The spec is the input, and the tools you already know are the execution engine.
+Once you are happy with that, you can start with the implementation phase by phase. Here it is when everything we saw in previous sessions comes in. You can use agent teams, sub agents, skills and everything. The spec will be the input, and all these tools are going to be the engine for this implementation.
 
-The skill is available now, you can go download it. You install it with /plugin install engineering-tools@squire-marketplace and you're good to go."
+So the skill is already available through the skills marketplace. So you can test it and feel free to propose any improvement you find. I want to add a disclaimer that this skill is a solid starting point, but maybe the best approach is to fork it and build one that fits your team's workflow."
 
 [LIVE DEMO — only if there's time, ~8-10 minutes]
 
@@ -265,11 +197,11 @@ The skill is available now, you can go download it. You install it with /plugin 
 
 SLIDE 20 — Closing: "It's about thinking, not prompting"
 ----------------------------------------------------------
-"To close: this is about thinking, not prompting.
+"To close: this is about thinking, not just prompting.
 
 AI is incredibly good at executing. But it doesn't know what to execute. That's our job. The better we define the what, the better the result will be.
 
-Thank you so much for your time. If you have questions, now's the time."
+Thank you so much for your time."
 
 [Q&A — ~5-7 minutes remaining]
 

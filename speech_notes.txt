@@ -250,7 +250,7 @@ SLIDE 19 — "/build-spec in action"
 
 Una vez que estas conforme con la spec y el plan, implementas fase por fase. Y aca es donde entra todo lo que estuvimos viendo en los workshops anteriores — agent teams, sub-agents, skills. Todo eso lo van a poder usar cuando implementen desde las specs que generen. La spec es el input, y las herramientas que ya conocen son el motor de ejecucion.
 
-El skill ya esta disponible, ya se lo pueden bajar. Lo instalas con /plugin install engineering-tools@squire-marketplace y listo."
+El skill ya esta disponible en el marketplace. Pueden probarlo y proponer cualquier mejora que encuentren. Eso si, quiero aclarar que este skill es un buen punto de partida, pero quizas lo mejor sea forkearlo y armarse uno que se adapte al flujo de trabajo de su equipo."
 
 [DEMO EN VIVO — solo si hay tiempo, ~8-10 minutos]
 
